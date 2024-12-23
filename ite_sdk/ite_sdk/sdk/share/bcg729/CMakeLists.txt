@@ -1,0 +1,33 @@
+include_directories(
+    .
+    ${PROJECT_SOURCE_DIR}/sdk/include/
+    )
+    
+add_library(bcg729 STATIC
+	adaptativeCodebookSearch.c
+	codebooks.c
+	computeAdaptativeCodebookGain.c
+	computeLP.c
+	computeWeightedSpeech.c
+	decodeAdaptativeCodeVector.c
+	decodeFixedCodeVector.c
+	decodeGains.c
+	decodeLSP.c
+	decoder.c
+	encoder.c
+	findOpenLoopPitchDelay.c
+	fixedCodebookSearch.c
+	gainQuantization.c
+	interpolateqLSP.c
+	LP2LSPConversion.c
+	LPSynthesisFilter.c
+	LSPQuantization.c
+	postFilter.c
+	postProcessing.c
+	preProcessing.c
+	qLSP2LP.c
+	utils.c
+	cng.c
+	dtx.c
+	vad.c
+    )

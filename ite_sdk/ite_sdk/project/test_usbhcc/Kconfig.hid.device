@@ -1,0 +1,56 @@
+#
+# For a description of the syntax of this configuration file,
+# see Documentation/kbuild/kconfig-language.txt.
+#
+
+mainmenu "Project Configuration"
+
+config CMAKE_SOURCE_DIR
+	string
+	option env="CMAKE_SOURCE_DIR"
+
+config USBHCC
+	def_bool y
+
+config USBHCC_DEVICE
+	def_bool y
+
+config DEF_USBD_USB0
+	def_bool y
+
+config DEF_USBD_CD_HID
+	def_bool y
+
+config USB0_ENABLE
+	def_bool n
+
+config UART1_ENABLE
+    def_bool y
+
+config GPIO_UART1_TX
+    default "4"
+
+config GPIO_UART1_RX
+    default "-1"
+
+config DEF_DBG_UART1
+    def_bool y
+
+config GPIO_USB_ID_PIN
+    default "51"
+    
+source "$CMAKE_SOURCE_DIR/sdk/Kconfig"
+
+menu "USB HID Test"
+
+choice
+	prompt "Test App"
+	default TEST_HID_DEVICE
+
+config TEST_HID_DEVICE
+    bool "USB HID DEVICE"
+    depends on DEF_USBD_CD_HID
+
+endchoice
+
+endmenu

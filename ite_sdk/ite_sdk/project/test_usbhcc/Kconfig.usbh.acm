@@ -1,0 +1,80 @@
+#
+# For a description of the syntax of this configuration file,
+# see Documentation/kbuild/kconfig-language.txt.
+#
+
+mainmenu "Project Configuration"
+
+config CMAKE_SOURCE_DIR
+	string
+	option env="CMAKE_SOURCE_DIR"
+
+config USBHCC
+	def_bool y
+	
+config USBH_CD_CDCACM
+	def_bool y
+
+config USB0_ENABLE
+	def_bool n
+
+#===== enable SD card ======
+config SD0_ENABLE
+    def_bool y
+
+config SD0_STATIC
+    def_bool y
+
+config GPIO_SD0_POWER_ENABLE
+    default "19"
+
+config GPIO_SD0_WRITE_PROTECT
+    default "-1"
+
+config GPIO_SD0_IO
+      default "15, 5, 7, 8, 9, 10, -1, -1, -1, -1"
+
+config TASK_DRIVE_PROBE	
+	def_bool y
+
+config FS_FAT
+	def_bool y
+
+#===== enable UART ======
+config UART1_ENABLE
+    def_bool y
+
+config GPIO_UART1_TX
+    default "4"
+
+config GPIO_UART1_RX
+    default "-1"
+	
+source "$CMAKE_SOURCE_DIR/sdk/Kconfig"
+
+
+menu "USB Host CDC-ACM Test"
+
+choice
+  	prompt "Test App"
+	  default TEST_USBH_CDCACM_SEND_FILE
+
+config TEST_USBH_CDCACM_SEND_FILE
+	  bool "Transfer file"
+	  depends on USBH_CD_CDCACM
+    help
+        Read file from SD card and transfer to another ITE platform.
+        Another platform is USB device as CDC-ACM.
+        Receive file from PC and save to our internal SD card.
+        cmd: send filename filesize
+        
+config USBH_ACM_FILENAME
+    string "File Name"
+    depends on TEST_USBH_CDCACM_SEND_FILE
+    default "test_020m.zip"
+    help
+        file name in sd card
+                
+endchoice
+
+endmenu

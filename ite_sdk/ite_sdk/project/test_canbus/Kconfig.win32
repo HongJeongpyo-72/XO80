@@ -1,0 +1,38 @@
+#
+# For a description of the syntax of this configuration file,
+# see Documentation/kbuild/kconfig-language.txt.
+#
+
+mainmenu "Project Configuration"
+
+config CMAKE_SOURCE_DIR
+    string
+    option env="CMAKE_SOURCE_DIR"
+
+config TEST_CANBUS
+    bool
+    default y
+
+config CANBUS_ENABLE
+    def_bool y
+
+config RAM_SIZE
+    default "0x4000000"
+
+config UART1_ENABLE
+    def_bool y
+
+config GPIO_UART1_TX
+    default "4"
+
+config GPIO_UART1_RX
+    default "-1"
+
+config WATCHDOG_ENABLE
+    def_bool n
+    
+config RTC_ENABLE
+    def_bool n
+    
+source "$CMAKE_SOURCE_DIR/sdk/Kconfig"
+

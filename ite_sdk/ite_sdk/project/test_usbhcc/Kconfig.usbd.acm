@@ -1,0 +1,91 @@
+#
+# For a description of the syntax of this configuration file,
+# see Documentation/kbuild/kconfig-language.txt.
+#
+
+mainmenu "Project Configuration"
+
+config CMAKE_SOURCE_DIR
+	string
+	option env="CMAKE_SOURCE_DIR"
+
+config ROM_COMPRESS
+    def_bool n
+
+config USBHCC
+	def_bool y
+
+config USBHCC_HOST
+	def_bool y
+
+config USBHCC_DEVICE
+	def_bool y
+
+config GPIO_USB_ID_PIN
+  default "53"
+
+config DEF_USBD_USB0
+	def_bool y
+
+config DEF_USBD_CD_CDCACM
+	def_bool y
+
+config USB0_ENABLE
+	def_bool n
+	
+config TASK_DRIVE_PROBE	
+	def_bool y
+
+config FS_FAT
+	def_bool y
+
+#===== enable SD card ======
+config SD0_ENABLE
+    def_bool y
+
+config SD0_STATIC
+    default y
+
+config GPIO_SD0_POWER_ENABLE
+    default "19"
+
+config GPIO_SD0_WRITE_PROTECT
+    default "-1"
+
+config GPIO_SD0_IO
+      default "15, 5, 7, 8, 9, 10, -1, -1, -1, -1"
+
+#===== enable UART ======
+config UART1_ENABLE
+    def_bool y
+
+config GPIO_UART1_TX
+    default "4"
+
+config GPIO_UART1_RX
+    default "-1"
+	
+source "$CMAKE_SOURCE_DIR/sdk/Kconfig"
+
+
+
+menu "USB Device Test"
+
+choice
+    prompt "As RS232 over USB"
+    depends on USBD_CD_CDCACM
+    default TEST_ACM_LOOPBACK
+
+config TEST_ACM_LOOPBACK
+    bool "Test by loopback"
+
+config TEST_ACM_SEND_FILE
+    bool "Transfer file"
+    help
+        Receive file from PC and save to our internal SD card.
+        cmd: send filename filesize
+
+endchoice
+
+endmenu
+

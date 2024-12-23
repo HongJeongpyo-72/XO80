@@ -1,0 +1,103 @@
+#
+# For a description of the syntax of this configuration file,
+# see Documentation/kbuild/kconfig-language.txt.
+#
+
+mainmenu "Project Configuration"
+
+config CMAKE_SOURCE_DIR
+    string
+    option env="CMAKE_SOURCE_DIR"
+
+config DEF_CHIP_PKG_IT976
+    def_bool y
+
+config ROM_COMPRESS
+    def_bool n
+
+#==== for SD ====
+config SD0_ENABLE
+    def_bool y
+
+config SD0_STATIC
+    default y
+
+#config GPIO_SD0_CARD_DETECT
+#   default "98"
+
+#config GPIO_SD0_POWER_ENABLE
+#   default "99"
+
+#config GPIO_SD0_WRITE_PROTECT
+#   default "100"
+
+config GPIO_SD0_IO
+    default "11, 5, 7, 8, 9, 10, -1, -1, -1, -1"
+
+#config SD1_ENABLE
+#   def_bool y
+
+config MMC_ENABLE
+    def_bool y
+
+#config SD1_STATIC
+#   def_bool n
+
+config SDIO_ENABLE
+      def_bool y
+
+config SDIO1_STATIC
+    def_bool y
+
+config GPIO_SD1_IO
+      default "12, 17, 7, 15, 9, 10, -1, -1, -1, -1"
+
+#==== for NET ====
+config NET_ENABLE
+    def_bool y
+
+config NET_ETHERNET
+    def_bool y
+
+config GPIO_ETHERNET
+    default "25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39"
+
+config GPIO_ETHERNET_LINK
+    default "24"
+
+config DEF_NET_AMEBA_SDIO
+    def_bool y
+
+#config DBG_INIT_SCRIPT
+#    default "p970a0_MEM40M_0901TOP.txt"
+
+source "$CMAKE_SOURCE_DIR/sdk/Kconfig"
+
+
+menu "Ameba SDIO Test"
+
+choice
+    prompt "Test App"
+    default TEST_AMEBA_RAW
+
+config TEST_AMEBA_RAW
+    bool "Without lwip"
+    help
+        Test without lwip.
+
+config TEST_AMEBA_LWIP
+    bool "Test by ping"
+    help
+        Ping by another PC and our IP is 192.168.1.249
+
+config TEST_AMEBA_FTP
+    bool "Test by ftp"
+    help
+        FTP server 192.168.1.100 and ......
+
+endchoice
+
+endmenu
+
+
+

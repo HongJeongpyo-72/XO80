@@ -1,0 +1,74 @@
+#
+# For a description of the syntax of this configuration file,
+# see Documentation/kbuild/kconfig-language.txt.
+#
+
+mainmenu "Project Configuration"
+
+config TEST_CAPTURE
+    bool
+    default y
+    select HAVE_LCD
+    select HAVE_GRAPHICS
+    select HAVE_VIDEO
+
+config CMAKE_SOURCE_DIR
+    string
+    option env="CMAKE_SOURCE_DIR"
+
+config BACKLIGHT_ENABLE
+    def_bool y
+
+config BACKLIGHT_DUTY_CYCLES
+    default "5, 25, 40, 55, 65, 75, 82, 88, 92, 95"
+
+config BACKLIGHT_DEFAULT_DUTY_CYCLE
+    default "95"
+
+config VIDEO_ENABLE
+    def_bool y
+
+config I2C0_ENABLE
+    def_bool y
+
+config DEF_IIC0_GPIO_CONFIG_2
+    def_bool y
+
+config DEV_TEST
+    def_bool n
+
+config WIN32_SIMULATOR
+    def_bool n
+
+config CAPTURE_MODULE_ENABLE
+    def_bool y
+
+source "$CMAKE_SOURCE_DIR/sdk/Kconfig"
+
+menu "LCD Test"
+
+    choice
+        prompt "Test App"
+        default TEST_LCD_COLOR
+
+    config TEST_LCD_COLOR
+        bool "LCD_COLOR"
+
+    config TEST_LCD_INTR
+        bool "LCD_INTR"
+
+    config TEST_LCDCONSOLE
+        bool "LCDCONSOLE"
+
+    config TEST_OSDCONSOLE
+        bool "OSDCONSOLE"
+
+    config TEST_BACKLIGHT
+        bool "BACKLIGHT"
+
+    config TEST_STNLCD
+        bool "STNLCD"
+
+    endchoice
+
+endmenu

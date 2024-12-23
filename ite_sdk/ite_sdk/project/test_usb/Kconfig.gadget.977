@@ -1,0 +1,125 @@
+#
+# For a description of the syntax of this configuration file,
+# see Documentation/kbuild/kconfig-language.txt.
+#
+
+mainmenu "Project Configuration"
+
+config CMAKE_SOURCE_DIR
+    string
+    option env="CMAKE_SOURCE_DIR"
+
+config DEF_CHIP_PKG_IT977
+    def_bool y
+
+config DEF_CHIP_REV_A0
+    def_bool y
+
+config ROM_COMPRESS
+    def_bool n
+
+config MEMDBG_ENABLE
+    default n
+
+#===== enable SD card ======
+config SD0_ENABLE
+    def_bool y
+
+config SD0_STATIC
+    default n
+
+config GPIO_SD0_CARD_DETECT
+    default "18"
+
+config GPIO_SD0_POWER_ENABLE
+    default "19"
+
+config GPIO_SD0_WRITE_PROTECT
+    default "-1"
+
+config GPIO_SD0_IO
+      default "11, 5, 7, 8, 9, 10, -1, -1, -1, -1"
+
+config SD1_ENABLE
+    def_bool y
+
+config SD1_STATIC
+    default n
+
+config GPIO_SD1_CARD_DETECT
+    default "22"
+
+config GPIO_SD1_POWER_ENABLE
+    default "23"
+
+config GPIO_SD1_WRITE_PROTECT
+    default "-1"
+
+config GPIO_SD1_IO
+      default "12, 5, 7, 8, 9, 10, -1, -1, -1, -1"
+
+#==== for FAT ====
+config FS_FAT
+    def_bool y
+
+#==== for Task ====
+config TASK_DRIVE_PROBE
+    def_bool y
+
+#===== enable USB ======
+config USB0_ENABLE
+    def_bool y
+
+config USB1_ENABLE
+    def_bool y
+
+config USB_DEVICE
+    def_bool y
+
+config DEF_USB_DEVICE_USB1
+    def_bool y
+
+config GPIO_USB_ID_PIN
+    default "42"
+
+config USBD_MASS_STORAGE
+    def_bool y
+    
+config USB_DEVICE_DISKS
+    default "23"
+
+config DBG_INIT_SCRIPT
+    default "IT970A0_396Mhz_DDR2_396Mhz.txt"
+
+
+source "$CMAKE_SOURCE_DIR/sdk/Kconfig"
+
+
+menu "USB Gadget Test"
+
+config TEST_MASS_STORAGE
+    bool "As Mass Storage"
+    depends on USBD_FILE_STORAGE || USBD_MASS_STORAGE
+    default y
+
+choice
+    prompt "As RS232 over USB"
+    depends on USBD_ACM
+    default TEST_ACM_LOOPBACK
+
+config TEST_ACM_LOOPBACK
+    bool "Test by loopback"
+
+config TEST_ACM_SEND_FILE
+    bool "Transfer file"
+    help
+        Receive file from PC and save to our internal SD card.
+        cmd: send filename filesize
+
+config TEST_ACM_DBG
+    bool "Test debug message"
+
+endchoice
+
+endmenu
+

@@ -1,0 +1,116 @@
+/*
+ * RGB LCD Initialization Script
+ *
+ * Date          : 2019/6/17
+ * Chip Type     : IT970
+ * Resolution    : 800x480
+ * Color format  : RGB565
+ * LCD interface : 24-bits
+ * Build version : LCD initial script editor Ver. 0.0.0.291
+ * SHA1 hash     : 6546c2af2114711aff3fb4e2a8b11699a8626505
+ * 
+ */
+
+/* ************************************************* */
+/*               Please don't remove!                */
+/* ************************************************* */
+/*@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@*/
+
+/* ************************************************* */
+/*     IT970, RGB Interface mode, Clock Setting      */
+/* ************************************************* */
+WRITE(0xD8000028, 0x002AC080);    // DCLK PLL3_OUT1
+WRITE(0xD0000114, 0x00000000);    // DCLK output  Delay setting
+
+/* ************************************************* */
+/*              PLL3 ck3_n1, 0xD8000000              */
+/* ************************************************* */
+WRITE(0xD8000120, 0x203D1601);
+WRITE(0xD8000124, 0x80000000);
+WRITE(0xD8000124, 0xF3000000);
+wait(220);                        // IDLE 220
+WRITE(0xD8000124, 0x80000000);
+
+/* ************************************************* */
+/*            General Setting 0xd000_0000            */
+/* ************************************************* */
+WRITE(0xD0000000, 0x00000070);    // DRAM mode, dclk, Falling latch
+WRITE(0xD0000004, 0x0F7F0A60);    // SRC:RGB565, dst 24-bits
+WRITE(0xD0000008, (${CFG_LCD_HEIGHT}<<16) | ${CFG_LCD_WIDTH});
+WRITE(0xD000000C, ${CFG_LCD_PITCH});
+WRITE(0xD0000010, ${CFG_LCDA_ADDR});
+WRITE(0xD0000014, ${CFG_LCDA_ADDR});
+WRITE(0xD0000018, ${CFG_LCDA_ADDR});
+
+/* ************************************************* */
+/*                  Test Color Mode                  */
+/* ************************************************* */
+WRITE(0xD0000020, 0x800000FF);    // test color mode=0, None
+
+/* ************************************************* */
+/*             Port Setting 0xD000_0000              */
+/*    HS:2, HBP:44, HFP:210, VS:2, VBP:21, VFP:22    */
+/* ************************************************* */
+WRITE(0xD0000070, 0x00010300);    // ctg_reset_on
+wait(1);                          // 1 μs
+WRITE(0xD0000070, 0x00000300);    // ctg_reset_off
+
+WRITE(0xD0000070, 0x00000307);    // enable ctg 0 1 2
+WRITE(0xD0000074, 0x020D0420);    // htotal=0x0420, vtotal=0x020D
+//CTG0(Hsync)
+WRITE(0xD0000078, 0x20010420);    // set0,p1, line x=htotal,        y=1
+WRITE(0xD000007C, 0x10010002);    // set1,p2       x=HOR.SYNC TIME, y=1
+WRITE(0xD0000080, 0x00000000);    // set1,p3(0x0,0)
+WRITE(0xD0000084, 0x00000000);    // set0,p4(0x0,0)
+//CTG1(Vsync)
+WRITE(0xD0000088, 0x60010420);    // set0,p1 ,frame  x=htotal, y=1
+WRITE(0xD000008C, 0x10030420);    // set1,p2         x=htotal, y=VER.SYNC TIME+1
+WRITE(0xD0000090, 0x00000000);    // set1,p3(0x0,0)
+WRITE(0xD0000094, 0x00000000);    // set0,p4(0x0,0)
+//CTG2(DE)
+WRITE(0xD0000098, 0x1019002E);    // set1,p1, line
+WRITE(0xD000009C, 0x21F9034E);    // set0,p2 x=HOR.SYNC TIME+HBP+Hor. display area y=(VER.SYNC TIME+1)+VBP+1+Ver. display area
+WRITE(0xD00000A0, 0x1019002E);    // set1,p3
+WRITE(0xD00000A4, 0x21F9034E);    // set0,p4
+
+/* ************************************************* */
+/*                GPIO Driving 00~11                 */
+/* ************************************************* */
+// WRITE(0xD1000058, 0xAAAAAAAA); //GPIO15~ 0
+// WRITE(0xD100005C, 0xAAAAAAAA); //GPIO31~16
+// WRITE(0xD10000D8, 0xAAAAAAAA); //GPIO47~32
+// WRITE(0xD10000DC, 0xAAAAAAAA); //GPIO63~48
+// WRITE(0xD1000158, 0xAAAAAAAA); //GPIO79~64
+// WRITE(0xD100015C, 0xAAAAAAAA); //GPIO95~80
+WRITE(0xD100015C, 0xFFFFFAAA);    // // GPIO95~86 Driving Max
+
+/* ************************************************* */
+/*           Pin Share Setting 0xD100_0000           */
+/* ************************************************* */
+WRITE(0xD10000E4, 0x11110000);    // GPIO[47:40]
+WRITE(0xD10000E8, 0x11111111);    // GPIO[55:48]
+WRITE(0xD10000EC, 0x01111111);    // GPIO[63:56]
+WRITE(0xD1000160, 0x00000000);    // GPIO[71:64]
+WRITE(0xD1000164, 0x00000000);    // GPIO[79:72]
+WRITE(0xD1000168, 0x11000000);    // GPIO[87:80]
+WRITE(0xD100016C, 0x01111111);    // GPIO[95:88]
+
+/* ************************************************* */
+/*                 Pin Mux(120~138)                  */
+/* ************************************************* */
+WRITE(0xD0000120, 0x17161514);    // LD22_LD21_LD20_LD19
+WRITE(0xD0000124, 0x0B0A0918);    // LD10_LD9_LD8_LD23
+WRITE(0xD0000128, 0x0F0E0D0C);    // LD14_LD13_LD12_LD11
+WRITE(0xD000012C, 0x03020110);    // LD2_LD1_LD0_LD15
+WRITE(0xD0000130, 0x07060504);    // LD6_LD5_LD4_LD3
+WRITE(0xD0000134, 0x191B1A08);    // LDEN_LVSYNC_LHSYNC_LD7
+WRITE(0xD0000138, 0x00111213);    // 00_LD16_LD17_LD18
+
+WRITE(0xD0000110, 0x00000000);    // LCD IO output mode
+
+/* ************************************************* */
+/*                    Enable LCD                     */
+/* ************************************************* */
+WRITE(0xD000001C, 0x00000001);    // SyncEn
+wait(1); // IDLE 1                // 1 μs
+WRITE(0xD000001C, 0x00000003);    // SyncEn DisplayEn

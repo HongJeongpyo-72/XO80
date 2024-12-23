@@ -1,0 +1,2834 @@
+﻿# System
+set(CFG_BUILD_ITH 1)
+set(CFG_BUILD_ITP 1)
+
+if (CFG_DEV_TEST)
+    set(CFG_BUILD_GMOCK y)
+    add_definitions(
+        -DCFG_DEV_TEST
+    )
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DOORBELL_INDOOR)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DOORBELL_LOBBY)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DOORBELL_OUTDOOR)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DOORBELL_ADMIN)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AIRCONDITIONER)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DASHBOARD)
+if (CFG_BUILD_MONGOOSE)
+    add_definitions(
+        -DCS_PLATFORM=0
+        -DMG_LOCALS
+    )
+endif()
+
+if (CFG_BUILD_PILLOWTALK)
+    set(CFG_BUILD_YAJL y)
+    set(CFG_NET_HTTP y)
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_BUILD_OPUS)
+
+if (CFG_BUILD_LEAF)
+    add_definitions(
+        -DCFG_LEAF_ENABLE
+    )
+endif()
+
+if (CFG_BUILD_FLOWER)
+    add_definitions(
+        -DCFG_FLOWER_ENABLE
+    )
+endif()
+
+if (CFG_BUILD_TUYA_CLOUD)
+    add_definitions(
+        -DCFG_TUYA_CLOUD_ENABLE
+    )
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBIP_ENABLE)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_CHIP_REV_A0)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_CHIP_REV_A1)
+
+if (DEFINED CFG_CHIP_PKG_IT978)
+    add_definitions(
+        -DCFG_CHIP_PKG_IT978
+        -DCFG_OSC_CLK=12000000
+        -DCFG_RTC_EXTCLK=32768
+        -DCFG_AXI_DMA
+    )
+    set(CFG_CHIP_FAMILY 970)
+
+elseif (DEFINED CFG_CHIP_PKG_IT976)
+    add_definitions(
+        -DCFG_CHIP_PKG_IT976
+        -DCFG_OSC_CLK=12000000
+        -DCFG_RTC_EXTCLK=32768
+        -DCFG_AXI_DMA
+    )
+    set(CFG_CHIP_FAMILY 970)
+
+elseif (DEFINED CFG_CHIP_PKG_IT977)
+    add_definitions(
+        -DCFG_CHIP_PKG_IT977
+        -DCFG_OSC_CLK=12000000
+        -DCFG_RTC_EXTCLK=32768
+        -DCFG_AXI_DMA
+    )
+    set(CFG_CHIP_FAMILY 970)
+
+elseif (DEFINED CFG_CHIP_PKG_IT972)
+    add_definitions(
+        -DCFG_CHIP_PKG_IT972
+        -DCFG_OSC_CLK=12000000
+        -DCFG_RTC_EXTCLK=32768
+        -DCFG_AXI_DMA
+    )
+    set(CFG_CHIP_FAMILY 970)
+
+elseif (DEFINED CFG_CHIP_PKG_IT973)
+    add_definitions(
+        -DCFG_CHIP_PKG_IT973
+        -DCFG_OSC_CLK=12000000
+        -DCFG_RTC_EXTCLK=32768
+        -DCFG_AXI_DMA
+    )
+    set(CFG_CHIP_FAMILY 970)
+
+elseif (DEFINED CFG_CHIP_PKG_IT960)
+    add_definitions(
+        -DCFG_CHIP_PKG_IT960
+        -DCFG_OSC_CLK=12000000
+        -DCFG_RTC_EXTCLK=12000000
+        -DCFG_AXI_DMA
+    )
+    set(CFG_CHIP_FAMILY 960)
+
+endif()
+
+if (DEFINED CFG_CPU_SM32)
+    if (DEFINED CFG_CPU_BIG_ENDIAN)
+        set(CFG_GLAMOMEM_BIG_ENDIAN 1)
+    else()
+        set(CFG_GLAMOMEM_BIG_ENDIAN 0)
+    endif()
+    set(CFG_CPU_NAME sm32)
+elseif (DEFINED CFG_CPU_RISCV)
+    set(CFG_GLAMOMEM_BIG_ENDIAN 0)
+    set(CFG_CPU_NAME riscv)
+else()
+    set(CFG_GLAMOMEM_BIG_ENDIAN 0)
+    set(CFG_CPU_NAME fa626)
+endif()
+
+add_definitions(
+    -DCFG_CHIP_FAMILY=${CFG_CHIP_FAMILY}
+)
+
+add_definitions(
+    -DCFG_RAM_SIZE=${CFG_RAM_SIZE}
+)
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_MEMDBG_ENABLE)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DCPS_ENABLE)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DPU_ENABLE)
+
+function(ITE_ADD_DEFINITIONS_IF_PLLN_ENABLE n)
+    if (DEFINED CFG_SPREAD_SPECTRUM_${n}_ENABLE)
+        add_definitions(
+            -DCFG_SPREAD_SPECTRUM_PLL${n}_ENABLE
+            -DCFG_SPREAD_SPECTRUM_PLL${n}_MODE=${CFG_SPREAD_SPECTRUM_PLL${n}_MODE}
+            -DCFG_SPREAD_SPECTRUM_PLL${n}_WIDTH=${CFG_SPREAD_SPECTRUM_PLL${n}_WIDTH}
+            -DCFG_SPREAD_SPECTRUM_PLL${n}_FREQ=${CFG_SPREAD_SPECTRUM_PLL${n}_FREQ}
+        )
+    endif()
+endfunction()
+
+ITE_ADD_DEFINITIONS_IF_PLLN_ENABLE(1)
+ITE_ADD_DEFINITIONS_IF_PLLN_ENABLE(2)
+ITE_ADD_DEFINITIONS_IF_PLLN_ENABLE(3)
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_CPU_WB)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_CPU_WRITE_ADDR0_DETECT)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_CPU_WRITE_BUFFER)
+
+if ((DEFINED CFG_CPU_WB AND (DEFINED CFG_USB0_ENABLE OR DEFINED CFG_USB1_ENABLE OR DEFINED CFG_NET_ETHERNET)) OR DEFINED CFG_USBHCC)
+    add_definitions(
+        -DCFG_WT_SIZE=0x4B000
+    )
+else()
+    add_definitions(
+        -DCFG_WT_SIZE=0
+    )
+endif()
+
+if (DEFINED CFG_XCPU_MSGQ)
+    add_definitions(
+        -DCFG_XCPU_MSGQ
+        -DCFG_XCPU_MSGQ_SIZE=${CFG_XCPU_MSGQ_SIZE}
+    )
+    set(CFG_BUILD_XCPU_MASTER 1)
+endif()
+
+add_definitions(
+    -DCFG_MMAP_SIZE=${CFG_MMAP_SIZE}
+)
+
+if (CFG_BUILD_MEDIASTREAMER2)
+    set(CFG_BUILD_MATROSKA y)
+    set(CFG_BUILD_EBML y)
+    set(CFG_BUILD_COREC y)
+    set(CFG_BUILD_AUDIO_PREPROCESS y)
+
+    #temp solution
+    if (CFG_CHIP_FAMILY STREQUAL 9910)
+        set(CFG_BUILD_SENSOR 1)
+        set(CFG_BUILD_CAPTURE 1)
+        set(CFG_BUILD_VP 1)
+        set(CFG_BUILD_VIDEO_ENCODER 1)
+        set(CFG_BUILD_ENCODER 1)
+    endif()
+
+    if (CFG_CHIP_FAMILY STREQUAL 970)
+        set(CFG_BUILD_ISP 1)
+        if(NOT DEFINED CFG_DOORBELL_INDOOR AND NOT DEFINED CFG_DOORBELL_ADMIN)
+            set(CFG_BUILD_SENSOR 1)
+            set(CFG_BUILD_CAPTURE 1)
+            set(CFG_BUILD_H264_ENCODER 1)
+            set(CFG_BUILD_VIDEO_ENCODER 1)
+        endif()
+    endif()
+
+    if (DEFINED CFG_CHIP_PKG_IT9079)
+        set(CFG_BUILD_VIDEO_ENCODER 1)
+    endif()
+
+    if (DEFINED CFG_CHIP_PKG_IT9856)
+        set(CFG_BUILD_VIDEO_ENCODER 1)
+    endif()
+endif()
+
+if (CFG_BUILD_FLOWER)
+    set(CFG_BUILD_FLOWER y)
+    if (CFG_CHIP_FAMILY STREQUAL 970)
+        set(CFG_BUILD_ISP 1)
+        set(CFG_BUILD_H264_ENCODER 1)
+        set(CFG_BUILD_VIDEO_ENCODER 1)
+        if(NOT DEFINED CFG_DOORBELL_INDOOR AND NOT DEFINED CFG_DOORBELL_ADMIN)
+            set(CFG_BUILD_SENSOR 1)
+            set(CFG_BUILD_CAPTURE 1)
+        endif()
+    endif()		
+endif()
+
+if (CFG_BUILD_ONVIF)
+    set(CFG_BUILD_OPENSSL 1)
+    set(CFG_BUILD_ONVIF y)
+endif()
+
+# Screen
+if (DEFINED CFG_LCD_ENABLE)
+    add_definitions(
+        -DCFG_LCD_ENABLE
+        -DCFG_LCD_WIDTH=${CFG_LCD_WIDTH}
+        -DCFG_LCD_HEIGHT=${CFG_LCD_HEIGHT}
+        -DCFG_LCD_PITCH=${CFG_LCD_PITCH}
+        -DCFG_LCD_BPP=${CFG_LCD_BPP}
+    )
+else()
+    add_definitions(
+        -DCFG_LCD_WIDTH=0
+        -DCFG_LCD_HEIGHT=0
+        -DCFG_LCD_PITCH=0
+        -DCFG_LCD_BPP=0
+    )
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_LCD_ENABLE)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_LCD_MULTIPLE)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_LCD_TRIPLE_BUFFER)
+
+if (DEFINED CFG_HDMI_OUT_ENABLE)
+    add_definitions(
+        -DCFG_HDMI_OUT_ENABLE
+    )
+    set(CFG_BUILD_HDMITX 1)
+endif()
+
+if (DEFINED CFG_LCD_INIT_ON_BOOTING)
+    add_definitions(
+        -DCFG_LCD_INIT_ON_BOOTING
+        -DCFG_LCD_BOOT_BGCOLOR=${CFG_LCD_BOOT_BGCOLOR}
+    )
+endif()
+
+if (DEFINED CFG_BACKLIGHT_ENABLE)
+    add_definitions(
+        -DCFG_BACKLIGHT_ENABLE
+        -DCFG_BACKLIGHT_FREQ=${CFG_BACKLIGHT_FREQ}
+        -DCFG_BACKLIGHT_DUTY_CYCLES=${CFG_BACKLIGHT_DUTY_CYCLES}
+        -DCFG_BACKLIGHT_DEFAULT_DUTY_CYCLE=${CFG_BACKLIGHT_DEFAULT_DUTY_CYCLE}
+        -DCFG_BACKLIGHT_BOOTLODER_DELAY=${CFG_BACKLIGHT_BOOTLODER_DELAY}
+    )
+endif()
+
+if (DEFINED CFG_TVOUT_ENABLE)
+    add_definitions(
+        -DCFG_TVOUT_ENABLE
+    )
+    set(CFG_BUILD_ISP 1)
+endif()
+
+if (DEFINED CFG_BL_SHOW_LOGO)
+    add_definitions(
+        -DCFG_BL_SHOW_LOGO
+        -DCFG_LCD_BOOT_BGCOLOR=${CFG_LCD_BOOT_BGCOLOR}
+    )
+endif()
+
+# Graphics
+if (DEFINED CFG_CMDQ_ENABLE)
+    add_definitions(
+        -DCFG_CMDQ_ENABLE
+        -DCFG_CMDQ_SIZE=${CFG_CMDQ_SIZE}
+    )
+else()
+    add_definitions(
+        -DCFG_CMDQ_SIZE=0
+    )
+endif()
+
+if (DEFINED CFG_M2D_ENABLE)
+    add_definitions(
+        -DCFG_M2D_ENABLE
+    )
+    set(CFG_BUILD_M2D 1)
+endif()
+
+if (DEFINED CFG_JPEG_HW_ENABLE)
+    add_definitions(
+        -DCFG_JPEG_HW_ENABLE
+    )
+    set(CFG_BUILD_ISP 1)
+    set(CFG_BUILD_JPG 1)
+    set(CFG_BUILD_ASYNC_FILE 1)
+
+    if (DEFINED CFG_PLAY_MJPEG_ON_BOOTING)
+        add_definitions(
+            -DCFG_PLAY_MJPEG_ON_BOOTING
+            -DCFG_BOOT_MJPEG_FILE=${CFG_BOOT_MJPEG_FILE}
+            -DCFG_BOOT_MJPEG_FILE_NAME="${CFG_BOOT_MJPEG_FILE}"
+            -DCFG_BOOT_VIDEO_BGCOLOR=${CFG_BOOT_VIDEO_BGCOLOR}
+            -DCFG_BOOT_VIDEO_VOLUME=${CFG_BOOT_VIDEO_VOLUME}
+        )
+    endif()
+endif()
+
+if (DEFINED CFG_TV_ENCODER_ENABLE)
+    add_definitions(
+        -DCFG_TV_ENCODER_ENABLE
+    )
+    set(CFG_BUILD_TV_ENCODER 1)
+endif()
+
+if (DEFINED CFG_MPEGENCODER_ENABLE)
+	set(CFG_BUILD_ASYNC_FILE 1)
+	set(CFG_BUILD_MPEGENCODER 1)
+	add_definitions(
+        -DENABLE_MENCODER=1
+    )
+endif ()
+
+if (DEFINED CFG_UI_ENC_ENABLE)
+    set(CFG_BUILD_UIENC 1)
+endif()
+
+if (DEFINED CFG_FONT_FILENAME)
+    add_definitions(
+        -DCFG_FONT_FILENAME="${CFG_FONT_FILENAME}"
+    )
+endif()
+
+if (DEFINED CFG_ITV_VP_NORMAL)
+    add_definitions(
+        -DCFG_ITV_VP_NORMAL
+    )
+endif()
+
+if (DEFINED CFG_LCD_PQ_TUNING)
+    add_definitions(
+        -DCFG_LCD_PQ_TUNING
+    )
+endif()
+
+if (DEFINED CFG_ITV_VP_HIGH_QUALITY)
+    add_definitions(
+        -DCFG_ITV_VP_HIGH_QUALITY
+    )
+endif()
+
+if (DEFINED CFG_ITV_DYNAMIC_ROTATE)
+    add_definitions(
+        -DCFG_ITV_DYNAMIC_ROTATE
+    )
+endif()
+
+# Audio
+if (DEFINED CFG_AUDIO_ENABLE)
+    add_definitions(
+        -DCFG_AUDIO_ENABLE
+        -DAUDIO_PLUGIN_MESSAGE_QUEUE
+        -DENABLE_CODECS_PLUGIN
+        -DCONFIG_ITADRIVER
+        -DCFG_RISC_ENABLE
+    )
+    ITE_ADD_DEFINITIONS_IF_DEFINED_BOOL(CFG_SINGLE_END_MODE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_BOOL(CFG_SINGLE_GROUND_MODE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_AUDIO_SAMPLING_RATE 8000)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_ENGINEER_MODEL)
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED_BOOL(CFG_AEC_ENABLE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_BOOL(CFG_AEC_WITH_FILTER)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_AEC_DELAY_MS 60)
+
+    if (DEFINED CFG_DUAL_MIC_ICA_SEPARATION)
+        add_definitions(
+            -DENABLE_DUAL_MIC_ICA_SEPARATION
+        )
+    endif()
+
+    if (DEFINED CFG_DMNR_HAND_HELD_SEPARATION)
+        add_definitions(
+            -DENABLE_DMNR_HAND_HELD_SEPARATION
+        )
+    endif()
+
+    if(DEFINED CFG_AEC_RUN_IN_ARM)
+        add_definitions(
+            -DAEC_RUN_IN_ARM
+        )
+    endif()
+    ITE_ADD_DEFINITIONS_IF_DEFINED_BOOL(CFG_ENABLE_RECV_FILTER)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_SPEAKER_GAIN 0)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_BOOL(CFG_AGC_ENABLE_SPK)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_BOOL(CFG_NOISE_GATE_ENABLE_SPK)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_NOISE_GATE_THRESHOLD_SPK 0)
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED_BOOL(CFG_ENABLE_SEND_FILTER)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_MIC_GAIN 0)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_BOOL(CFG_AGC_ENABLE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_BOOL(CFG_NOISE_GATE_ENABLE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_NOISE_GATE_THRESHOLD 0)
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED_BOOL(CFG_SPK_EQUALIZER_ENABLE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_EQUALIZER_SPKGAIN_SET NULL)
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED_BOOL(CFG_MIC_EQUALIZER_ENABLE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_EQUALIZER_MICGAIN_SET NULL)
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_CODEC_AACDEC)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_CODEC_AC3DEC)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_CODEC_AC3SPDIF)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_CODEC_AMR)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_CODEC_EAC3DEC)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_CODEC_MP3DEC)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_CODEC_MP2DEC)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_CODEC_WAV)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_CODEC_WMADEC)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_CODEC_FLACDEC)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_CODEC_SBC)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_CODEC_G711_ALAW)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_CODEC_G711_ULAW)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_CODEC_G722)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_CODEC_G726_ALAW)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_CODEC_G726_ULAW)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_CODEC_G729)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_CODEC_OPUS)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_OPUS_DTX_ENABLE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_OPUS_FEC_ENABLE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_CODEC_MP2ENC)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_CODEC_AACENC)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_RISC_TS_DEMUX_PLUGIN)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_I2S_CLOCK_FRACTION_MODE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_BUILD_ASR)
+    set(CFG_BUILD_AUDIO 1)
+    set(CFG_BUILD_RISC 1)
+    
+    if (CFG_AUDIO_FILTER_ENABLE)
+        set(CFG_BUILD_SDL y)
+        set(CFG_BUILD_AUDIO_PREPROCESS y)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_FILTER_ENABLE)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_EQUALIZER_FILTER)
+        ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_AUDIO_EQUALIZER_GAIN_SET NULL)
+    endif()
+endif()
+
+if (DEFINED CFG_BUILD_AUDIO_MGR)
+    add_definitions(
+        -DCFG_AUDIO_MGR_THREAD_STACK_SIZE=${CFG_AUDIO_MGR_THREAD_STACK_SIZE}
+        -DCFG_AUDIO_MGR_READ_BUFFER_SIZE=${CFG_AUDIO_MGR_READ_BUFFER_SIZE}
+        -DCFG_AUDIO_SPECIAL_CASE_BUFFER_SIZE=${CFG_AUDIO_SPECIAL_CASE_BUFFER_SIZE}
+    )
+endif()
+
+if (DEFINED CFG_RISC_ENABLE)
+    set(CFG_BUILD_RISC 1)
+endif()
+
+# Video
+if (DEFINED CFG_VIDEO_ENABLE)
+    add_definitions(
+        -DCFG_STC_ENABLE
+        -DCFG_VIDEO_ENABLE
+        -DCFG_VIDEO_MAX_WIDTH=1920
+        -DCFG_VIDEO_MAX_HEIGHT=1088
+        -DCFG_VIDEO_BUFFER_PITCH=2048
+        -DCFG_VIDEO_DECODE_MODE=1   # 0: general mode, 1: JEDI mode
+        -DTWO_WAY_AUDIORECORD
+    )
+    set(CFG_BUILD_ISP 1)
+    if (DEFINED CFG_MULTICAST_ENABLE)
+        add_definitions(
+            -DENABLE_VIDEO_MULTICAST
+        )
+    endif()
+    if (DEFINED CFG_RTSP_CLIENT_ENABLE)
+        add_definitions(
+            -DCFG_RTSP_CLIENT_ENABLE
+        )
+        set(CFG_BUILD_LIVE555 1)
+        set(CFG_BUILD_VIDEO_ENCODER 1)
+        set(CFG_BUILD_H264_ENCODER 1)
+        set(CFG_BUILD_ASYNC_FILE 1)
+        set(CFG_BUILD_TS_AIRFILE 1)
+    endif()
+    #if (DEFINED CFG_LCD_ENABLE)
+    set(CFG_BUILD_ITV 1)
+    set(CFG_BUILD_FFMPEG 1)
+    set(CFG_BUILD_AUDIO 1)  #ffmpeg needs audio API
+    add_definitions(
+        -DCFG_BUILD_ITV
+    )
+#endif()
+if (DEFINED CFG_FFMPEG_H264_SW)
+    set(CFG_BUILD_FFMPEG 1)
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TEST_VIDEO)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TEST_RTSPCLIENT)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_VIDEO_FRAME_FUN_ENABLE)
+
+if (DEFINED CFG_MJPEG_DEC_ENABLE)
+    set(CFG_BUILD_MJPEG 1)
+    add_definitions(
+        -DCFG_MJPEG_DEC_ENABLE
+    )
+endif()
+
+if (CFG_CHIP_FAMILY STREQUAL 970 OR CFG_CHIP_FAMILY STREQUAL 960)
+    set(CFG_BUILD_CAPTURE 1)
+    set(CFG_BUILD_SENSOR 1)
+    set(CFG_BUILD_H264_DECODER 1)
+endif()
+
+if (DEFINED CFG_VIDEO_PREVIEW_ENABLE)
+    add_definitions(
+        -DCFG_VIDEO_PREVIEW_ENABLE
+    )
+endif()
+
+if (DEFINED CFG_QR_DECODE_ENABLE)
+    add_definitions(
+        -DCFG_QR_DECODE_ENABLE
+    )
+	set(CFG_BUILD_QRDECODE 1)
+endif()
+
+if (DEFINED CFG_QR_ENCODE_ENABLE)
+    add_definitions(
+        -DCFG_QR_ENCODE_ENABLE
+    )
+	set(CFG_BUILD_QRENCODE 1)
+endif()
+
+endif()
+
+# VP test
+if (DEFINED CFG_VP_TEST_MODULE_ENABLE)
+    set(CFG_BUILD_ISP 1)
+    add_definitions(
+        -DCFG_VP_TEST_MODULE_ENABLE
+    )
+endif()
+
+# SPI test
+if (DEFINED CFG_SPI_SLAVE_TEST)
+    add_definitions(
+        -DCFG_SPI_SLAVE_TEST
+    )
+endif()
+
+# Ts Module
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TS_MODULE_ENABLE)
+if (DEFINED CFG_PURE_TS_STREAM)
+    set(CFG_BUILD_TSI 1)
+
+    # tsi interface option
+    if (DEFINED CFG_TSI_SERIAL_MODE)
+        add_definitions(
+            -DCFG_TSI_SERIAL_MODE
+            -DCFG_TSI_BUF_SIZE=${CFG_TSI_BUF_SIZE}
+        )
+    elseif (DEFINED CFG_TSI_PARALLEL_MODE)
+        add_definitions(
+            -DCFG_TSI_PARALLEL_MODE
+            -DCFG_TSI_BUF_SIZE=${CFG_TSI_BUF_SIZE}
+        )
+    endif()
+elseif (DEFINED CFG_ISDB_STANDARDS)
+    set(CFG_BUILD_TSI 1)
+    set(CFG_BUILD_DEMOD_CTRL 1)
+
+    set(CFG_BUILD_TS_DEMUXER 1)
+    set(CFG_TS_DEMUX_ENABLE TRUE)
+
+    set(CFG_DEMOD_ISDB_ENABLE TRUE)
+
+    add_definitions(
+        -DCFG_ISDB_ENABLE
+        -DCFG_DEMOD_ENABLE
+        -DCFG_TS_DEMUX_ENABLE
+        -DCFG_DEMOD_SUPPORT_COUNT=${CFG_DEMOD_SUPPORT_COUNT}
+    )
+
+    # tsi interface option
+    if (DEFINED CFG_TSI_SERIAL_MODE)
+        add_definitions(
+            -DCFG_TSI_SERIAL_MODE
+            -DCFG_TSI_BUF_SIZE=${CFG_TSI_BUF_SIZE}
+        )
+    elseif (DEFINED CFG_TSI_PARALLEL_MODE)
+        add_definitions(
+            -DCFG_TSI_PARALLEL_MODE
+            -DCFG_TSI_BUF_SIZE=${CFG_TSI_BUF_SIZE}
+        )
+    endif()
+
+elseif (DEFINED CFG_DVB_STANDARDS)
+
+    set(CFG_BUILD_TS_AIRFILE 1)
+    set(CFG_BUILD_DEMOD_CTRL 1)
+    set(CFG_BUILD_TSI 1)
+
+    if (DEFINED CFG_TS_DEMUX_ENABLE)
+        set(CFG_BUILD_TS_DEMUXER 1)
+        add_definitions(
+            -DCFG_TS_DEMUX_ENABLE
+        )
+    endif()
+
+    if (DEFINED CFG_TS_EXTRACTOR_ENABLE)
+        set(CFG_BUILD_TS_EXTRACTOR 1)
+        add_definitions(
+            -DCFG_TS_EXTRACTOR_ENABLE
+        )
+    endif()
+
+    # demod option
+    if (DEFINED CFG_DEMOD_NONE)
+        add_definitions(
+            -DCFG_DEMOD_SUPPORT_COUNT=-1
+        )
+    else()
+        set(CFG_BUILD_IIC 1)
+        set(CFG_DEMOD_ENABLE TRUE)
+
+        add_definitions(
+            -DCFG_DEMOD_ENABLE
+            -DCFG_DEMOD_SUPPORT_COUNT=${CFG_DEMOD_SUPPORT_COUNT}
+        )
+
+        if (DEFINED CFG_DEMOD_IT9135)
+            add_definitions(
+                -DCFG_DEMOD_IT9135
+            )
+        elseif (DEFINED CFG_DEMOD_IT9137)
+            add_definitions(
+                -DCFG_DEMOD_IT9137
+            )
+        elseif (DEFINED CFG_DEMOD_IT9137_USB)
+            add_definitions(
+                -DCFG_DEMOD_IT9137_USB
+            )
+
+            if (DEFINED CFG_DEMOD_USB_INDEX)
+                add_definitions(
+                    -DCFG_USB_DEMOD_ENABLE
+                    -DCFG_DEMOD_USB_INDEX=${CFG_DEMOD_USB_INDEX}
+                )
+                if (${CFG_DEMOD_USB_INDEX} STREQUAL 0)
+                    set(CFG_BUILD_USB 1)
+                    set(CFG_USB0_ENABLE 1)
+                elseif (${CFG_DEMOD_USB_INDEX} STREQUAL 1)
+                    set(CFG_BUILD_USB 1)
+                    set(CFG_USB1_ENABLE 1)
+                endif()
+            else()
+                add_definitions(
+                    -DCFG_DEMOD_USB_INDEX=-1
+                )
+            endif()
+        endif()
+
+        # switch i2c addr for demod
+        ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_DEMOD_SWITCH_GPIO_0 -1)
+    endif()
+
+    # aggre option
+    if (DEFINED CFG_AGGRE_NONE)
+        add_definitions(
+            -DCFG_AGGRE_SUPPORT_COUNT=-1
+        )
+    else()
+        set(CFG_BUILD_IIC 1)
+
+        add_definitions(
+            -DCFG_AGGRE_ENABLE
+            -DCFG_AGGRE_SUPPORT_COUNT=${CFG_AGGRE_SUPPORT_COUNT}
+        )
+
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AGGRE_IT9300)
+
+        function(ITE_ADD_DEFINITIONS_IF_DEFINED_DEMOD_N_LINK_AGGRE_PORT n)
+            if (DEFINED CFG_DEMOD_${n}_LINK_AGGRE_PORT)
+                add_definitions(
+                    -DCFG_DEMOD_${n}_LINK_AGGRE_PORT=${CFG_DEMOD_${n}_LINK_AGGRE_PORT}
+                )
+            endif()
+        endfunction()
+
+        ITE_ADD_DEFINITIONS_IF_DEFINED_DEMOD_N_LINK_AGGRE_PORT(0)
+        ITE_ADD_DEFINITIONS_IF_DEFINED_DEMOD_N_LINK_AGGRE_PORT(1)
+        ITE_ADD_DEFINITIONS_IF_DEFINED_DEMOD_N_LINK_AGGRE_PORT(2)
+        ITE_ADD_DEFINITIONS_IF_DEFINED_DEMOD_N_LINK_AGGRE_PORT(3)
+
+    endif()
+
+    # tsi interface option
+    if (DEFINED CFG_TSI_SERIAL_MODE)
+        add_definitions(
+            -DCFG_TSI_SERIAL_MODE
+            -DCFG_TSI_BUF_SIZE=${CFG_TSI_BUF_SIZE}
+        )
+    elseif (DEFINED CFG_TSI_PARALLEL_MODE)
+        add_definitions(
+            -DCFG_TSI_PARALLEL_MODE
+            -DCFG_TSI_BUF_SIZE=${CFG_TSI_BUF_SIZE}
+        )
+    endif()
+endif()
+
+#hdmi rx chip
+if(DEFINED CFG_HDMI_RX_ENABLE)
+    set(CFG_BUILD_HDMIRX 1)
+    if(DEFINED CFG_IT6801)
+        add_definitions(
+            -DCFG_IT6801
+            -DCFG_HDMI_RX_ENABLE
+            -DCFG_HDMI_OUTPUT_MODE=${CFG_HDMIRX_OUTPUTMODE}
+        )
+    endif()
+    if(DEFINED CFG_IT66021)
+        add_definitions(
+            -DCFG_IT66021
+            -DCFG_HDMI_RX_ENABLE
+            -DCFG_HDMI_OUTPUT_MODE=${CFG_HDMIRX_OUTPUTMODE}
+        )
+    endif()
+    add_definitions(
+        -DENABLE_HDMI_GPIO_IN_SET
+    )
+
+    #iic port sel
+    function(ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_HDMIRX_IIC n)
+        if (DEFINED CFG_HDMIRX_IIC${n})
+            add_definitions(
+                -DCFG_HDMIRX_IIC_PORT=${n}
+            )
+        endif()
+    endfunction()
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_HDMIRX_IIC(0)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_HDMIRX_IIC(1)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_HDMIRX_IIC(2)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_HDMIRX_IIC(3)
+endif()
+
+#hdmi tx chip
+if(DEFINED CFG_HDMI_TX_ENABLE)
+    set(CFG_BUILD_HDMITX 1)
+    add_definitions(
+        -DENABLE_HDMI_GPIO_OUT_SET
+    )
+    #iic port sel
+    function(ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_HDMITX_IIC n)
+        if (DEFINED CFG_HDMITX_IIC${n})
+            add_definitions(
+                -DCFG_HDMITX_IIC_PORT=${n}
+            )
+        endif()
+    endfunction()
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_HDMITX_IIC(0)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_HDMITX_IIC(1)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_HDMITX_IIC(2)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_HDMITX_IIC(3)
+endif()
+
+#canbus0
+if(DEFINED CFG_CANBUS_ENABLE)
+    set(CFG_BUILD_CAN_BUS 1)
+
+    if (DEFINED CFG_CANBUS0_SPI0)
+       add_definitions(
+          -DCFG_CANBUS0_SPI_PORT=0
+       )
+    else()
+       add_definitions(
+          -DCFG_CANBUS0_SPI_PORT=1
+       )
+    endif()
+
+    add_definitions(
+        -DCFG_CANBUS_ENABLE
+        -DCFG_GPIO_CANBUS_GEN_INT=${CFG_GPIO_CANBUS_GEN_INT}
+        -DCFG_GPIO_CANBUS_INT0=${CFG_GPIO_CANBUS_INT0}
+        -DCFG_GPIO_CANBUS_INT1=${CFG_GPIO_CANBUS_INT1}
+        -DCFG_GPIO_CANBUS_STBY=${CFG_GPIO_CANBUS_STBY}
+    )
+endif()
+#canbus1
+if(DEFINED CFG_CANBUS1_ENABLE)
+    set(CFG_BUILD_CAN_BUS 1)
+    if (DEFINED CFG_CANBUS1_SPI0)
+       add_definitions(
+          -DCFG_CANBUS1_SPI_PORT=0
+       )
+    else()
+       add_definitions(
+          -DCFG_CANBUS1_SPI_PORT=1
+       )
+    endif()
+    add_definitions(
+        -DCFG_CANBUS1_ENABLE
+        -DCFG_GPIO_CANBUS1_GEN_INT=${CFG_GPIO_CANBUS1_GEN_INT}
+        -DCFG_GPIO_CANBUS1_INT0=${CFG_GPIO_CANBUS1_INT0}
+        -DCFG_GPIO_CANBUS1_INT1=${CFG_GPIO_CANBUS1_INT1}
+        -DCFG_GPIO_CANBUS1_STBY=${CFG_GPIO_CANBUS1_STBY}
+    )
+endif()
+
+#canbus protocol
+if(DEFINED CFG_OBD2_ENABLE)
+    set(CFG_BUILD_OBD2 1)
+endif()
+
+#if run grabber
+if (DEFINED CFG_GRABBER_ENABLE)
+    set(CFG_BUILD_ASYNC_FILE 1)
+    set(CFG_BUILD_MPEGENCODER 1)
+    add_definitions(
+        -DCFG_GRABBER_ENABLE=1
+        -DENABLE_MENCODER=1
+    )
+endif ()
+
+if (DEFINED CFG_BUILD_ITU)
+    add_definitions(
+        -DCFG_BUILD_ITU
+    )
+endif ()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_ITU_FT_CACHE_ENABLE)
+
+# return channel option
+if (DEFINED CFG_TSCAM_ENABLE)
+    set(CFG_BUILD_TSCAM_CTRL 1)
+
+    add_definitions(
+        -DCFG_TSCAM_ENABLE
+    )
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TSCAM_PKT_FMT_CUSTOMER)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TSCAM_PKT_FMT_SIMPLEX_RS232)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TSCAM_PKT_FMT_DUPLEX_RS232)
+endif()
+
+# Storage
+if (DEFINED CFG_SD0_ENABLE)
+    add_definitions(
+        -DCFG_SD0_ENABLE
+    )
+
+    if (DEFINED CFG_SD0_STATIC)
+        add_definitions(
+            -DCFG_SD0_STATIC
+            -DCFG_SD0_RESERVED_SIZE=${CFG_SD0_RESERVED_SIZE}
+        )
+    endif()
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SD0_NO_PIN_SHARE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SDIO0_STATIC)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SD0_CARD_1BIT)
+    set(CFG_BUILD_SD 1)
+    set(CFG_BUILD_LINUX 1)
+endif()
+
+if (DEFINED CFG_SD1_ENABLE)
+    add_definitions(
+        -DCFG_SD1_ENABLE
+    )
+
+    if (DEFINED CFG_SD1_STATIC)
+        add_definitions(
+            -DCFG_SD1_STATIC
+            -DCFG_SD1_RESERVED_SIZE=${CFG_SD1_RESERVED_SIZE}
+        )
+    endif()
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SD0_NO_PIN_SHARE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SDIO1_STATIC)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SD1_CARD_1BIT)
+    set(CFG_BUILD_SD 1)
+    set(CFG_BUILD_LINUX 1)
+endif()
+
+if (DEFINED CFG_MMC_ENABLE)
+    add_definitions(
+        -DCFG_MMC_ENABLE
+    )
+    set(CFG_BUILD_SD 1)
+    set(CFG_BUILD_LINUX 1)
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SDIO_ENABLE)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SDIO_4BIT_MODE)
+
+if (DEFINED CFG_ESP32_SDIO_AT)
+    add_definitions(
+        -DCFG_ESP32_SDIO_AT
+    )
+    set(CFG_BUILD_ESP32_SDIO_AT 1)
+endif()
+
+if (DEFINED CFG_MS_ENABLE)
+    add_definitions(
+        -DCFG_MS_ENABLE
+    )
+    set(CFG_BUILD_MSPRO 1)
+endif()
+
+if (DEFINED CFG_XD_ENABLE)
+    add_definitions(
+        -DCFG_XD_ENABLE
+    )
+    set(CFG_BUILD_XD 1)
+endif()
+
+if (DEFINED CFG_NAND_ENABLE)
+    add_definitions(
+        -DCFG_NAND_ENABLE
+        -DCFG_NAND_RESERVED_SIZE=${CFG_NAND_RESERVED_SIZE}
+        -DCFG_NAND_PAGE_SIZE=${CFG_NAND_PAGE_SIZE}
+    )
+    set(CFG_BUILD_NAND 1)
+
+    if (DEFINED CFG_SPI_NAND)
+        add_definitions(
+            -DCFG_SPI_NAND
+        )
+
+        if (DEFINED CFG_AXISPI_ENABLE)
+            add_definitions(
+                -DCFG_AXISPI_ENABLE
+            )
+            set(CFG_BUILD_AXISPI 1)
+        endif()
+        set(CFG_BUILD_SPI 1)
+
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_UPGRADE_FILE_FOR_NAND_PROGRAMMER)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SPI_NAND_BOOT)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SPI_NAND_USE_SPI0)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SPI_NAND_USE_SPI1)
+    elseif (DEFINED CFG_PPI_NAND)
+        add_definitions(
+            -DCFG_PPI_NAND
+        )
+    endif()
+endif()
+
+if (DEFINED CFG_NOR_ENABLE)
+    add_definitions(
+        -DCFG_NOR_ENABLE
+        -DCFG_NOR_RESERVED_SIZE=${CFG_NOR_RESERVED_SIZE}
+        -DCFG_NOR_CACHE_SIZE=${CFG_NOR_CACHE_SIZE}
+        -DCFG_NOR_CACHE_FLUSH_INTERVAL=${CFG_NOR_CACHE_FLUSH_INTERVAL}
+    )
+
+    if (DEFINED CFG_NOR_USE_AXISPI)
+        add_definitions(
+            -DCFG_NOR_USE_AXISPI
+        )
+        set(CFG_BUILD_AXISPI 1)
+    endif()
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NOR_ENABLE_QUADMODE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NOR_ENABLE_DTRMODE)
+
+    if (DEFINED CFG_NOR_SHARE_GPIO)
+        add_definitions(
+            -DCFG_NOR_SHARE_GPIO
+        )
+    elseif (DEFINED CFG_SPI_NAND)
+        add_definitions(
+            -DCFG_NOR_SHARE_SPI_NAND
+        )
+    endif()
+
+    set(CFG_BUILD_SPI 1)
+    set(CFG_BUILD_NOR 1)
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_RAMDISK_ENABLE)
+
+if ($ENV{CFG_PLATFORM} STREQUAL openrtos)
+    if (DEFINED CFG_MSC_ENABLE)
+        add_definitions(
+            -DCFG_MSC_ENABLE
+        )
+        set(CFG_BUILD_MSC 1)
+    endif()
+    if (DEFINED CFG_UAS_ENABLE)
+        add_definitions(
+            -DCFG_UAS_ENABLE
+        )
+        set(CFG_BUILD_UAS 1)
+    endif()
+    if (DEFINED CFG_USB_ECM)
+        add_definitions(
+            -DCFG_USB_ECM
+            -DCFG_NET_ETHERNET_POLL_INTERVAL=${CFG_NET_ETHERNET_POLL_INTERVAL}
+        )
+        set(CFG_BUILD_NET 1)
+        set(CFG_BUILD_ECM 1)
+    endif()
+    if (DEFINED CFG_USB_ECM_EX)
+        add_definitions(
+            -DCFG_USB_ECM_EX
+        )
+        set(CFG_BUILD_NET 1)
+        set(CFG_BUILD_ECM 1)
+    endif()
+endif()
+
+# File System
+if (DEFINED CFG_FS_FAT)
+    add_definitions(
+        -DCFG_FS_FAT
+    )
+    set(CFG_BUILD_FAT 1)
+endif()
+
+if (DEFINED CFG_FS_NTFS)
+    add_definitions(
+        -DCFG_FS_NTFS
+        -DCFG_FS_NTFS_CACHE_PAGE_COUNT=${CFG_FS_NTFS_CACHE_PAGE_COUNT}
+        -DCFG_FS_NTFS_CACHE_PAGE_SIZE=${CFG_FS_NTFS_CACHE_PAGE_SIZE}
+    )
+    set(CFG_BUILD_NTFS 1)
+endif()
+
+add_definitions(
+    -DCFG_PRIVATE_DRIVE="${CFG_PRIVATE_DRIVE}"
+    -DCFG_PUBLIC_DRIVE="${CFG_PUBLIC_DRIVE}"
+    -DCFG_TEMP_DRIVE="${CFG_TEMP_DRIVE}"
+    -DCFG_BACKUP_DRIVE="${CFG_BACKUP_DRIVE}"
+)
+
+# BACKUP
+if (DEFINED CFG_CHECK_FILES_CRC_ON_BOOTING)
+    add_definitions(
+        -DCFG_CHECK_FILES_CRC_ON_BOOTING
+    )
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_BACKUP_ENABLE)
+
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NOR_PARTITION3)
+
+# Peripheral
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_RTC_ENABLE)
+
+if(DEFINED CFG_RTC_ENABLE)
+	if(CFG_RTC_MODULE STREQUAL "itp_rtc_internal.c")
+		add_definitions(
+			-DCFG_RTC_INTERNAL
+		)
+	endif()
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_RTC_I2C0)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_RTC_I2C1)
+
+if (DEFINED CFG_RTC_REDUCE_IO_ACCESS_ENABLE)
+    add_definitions(
+        -DCFG_RTC_REDUCE_IO_ACCESS_ENABLE
+        -DCFG_RTC_SYNC_PERIOD=${CFG_RTC_SYNC_PERIOD}
+    )
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_RTC_18P)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_RTC_6_8P)
+
+add_definitions(
+    -DCFG_RTC_DEFAULT_TIMESTAMP=${CFG_RTC_DEFAULT_TIMESTAMP}
+)
+
+add_definitions(
+    -DCFG_INTERNAL_RTC_TIMER=${CFG_INTERNAL_RTC_TIMER}
+)
+
+if (DEFINED CFG_I2C0_ENABLE)
+    add_definitions(
+        -DCFG_I2C0_ENABLE
+    )
+
+    set(CFG_BUILD_IIC 1)
+endif()
+
+if (DEFINED CFG_I2C1_ENABLE)
+    add_definitions(
+        -DCFG_I2C1_ENABLE
+        -DCFG_HW_I2C_ENABLE
+    )
+
+    set(CFG_BUILD_IIC 1)
+endif()
+
+if (DEFINED CFG_I2C2_ENABLE)
+    add_definitions(
+        -DCFG_I2C2_ENABLE
+    )
+
+    set(CFG_BUILD_IIC 1)
+endif()
+
+if (DEFINED CFG_I2C3_ENABLE)
+    add_definitions(
+        -DCFG_I2C3_ENABLE
+    )
+
+    set(CFG_BUILD_IIC 1)
+endif()
+
+if (DEFINED CFG_SW_I2C_ENABLE)
+    add_definitions(
+        -DCFG_SW_I2C_ENABLE
+        -DCFG_SW_I2C_GPIO=${CFG_SW_I2C_GPIO}
+    )
+    set(CFG_BUILD_IIC_SW 1)
+endif()
+
+if (DEFINED CFG_AXISPI_ENABLE)
+    add_definitions(
+        -DCFG_AXISPI_ENABLE
+        -DCFG_AXISPI_MOSI_GPIO=${CFG_AXISPI_MOSI_GPIO}
+        -DCFG_AXISPI_MISO_GPIO=${CFG_AXISPI_MISO_GPIO}
+        -DCFG_AXISPI_CLOCK_GPIO=${CFG_AXISPI_CLOCK_GPIO}
+        -DCFG_AXISPI_CHIP_SEL_GPIO=${CFG_AXISPI_CHIP_SEL_GPIO}
+        -DCFG_AXISPI_WP_GPIO=${CFG_AXISPI_WP_GPIO}
+        -DCFG_AXISPI_HOLD_GPIO=${CFG_AXISPI_HOLD_GPIO}
+    )
+endif()
+
+if (DEFINED CFG_SPI0_ENABLE)
+    add_definitions(
+        -DCFG_SPI0_ENABLE
+        -DCFG_SPI0_MOSI_GPIO=${CFG_SPI0_MOSI_GPIO}
+        -DCFG_SPI0_MISO_GPIO=${CFG_SPI0_MISO_GPIO}
+        -DCFG_SPI0_CLOCK_GPIO=${CFG_SPI0_CLOCK_GPIO}
+        -DCFG_SPI0_CHIP_SEL_GPIO=${CFG_SPI0_CHIP_SEL_GPIO}
+    )
+endif()
+
+if (DEFINED CFG_SPI0_40MHZ_ENABLE)
+    add_definitions(
+        -DCFG_SPI0_40MHZ_ENABLE
+        -DCFG_SPI0_NORCLK_PARA=${CFG_SPI0_NORCLK_PARA}
+        -DCFG_SPI0_NANDCLK_PARA=${CFG_SPI0_NANDCLK_PARA}
+    )
+endif()
+
+if (DEFINED CFG_SPI1_ENABLE)
+    add_definitions(
+        -DCFG_SPI1_ENABLE
+        -DCFG_SPI1_MOSI_GPIO=${CFG_SPI1_MOSI_GPIO}
+        -DCFG_SPI1_MISO_GPIO=${CFG_SPI1_MISO_GPIO}
+        -DCFG_SPI1_CLOCK_GPIO=${CFG_SPI1_CLOCK_GPIO}
+        -DCFG_SPI1_CHIP_SEL_GPIO=${CFG_SPI1_CHIP_SEL_GPIO}
+    )
+endif()
+
+if (DEFINED CFG_GPIO_EXPANDER_ENABLE)
+    add_definitions(
+        -DCFG_GPIO_EXPANDER_ENABLE
+        -DCFG_GPIO_EXPANDER=${CFG_GPIO_EXPANDER}
+    )
+
+    if (DEFINED CFG_SECOND_GPIO_EXPANDER_ENABLE)
+        add_definitions(
+            -DCFG_SECOND_GPIO_EXPANDER_ENABLE
+            -DCFG_SECOND_GPIO_EXPANDER=${CFG_SECOND_GPIO_EXPANDER}
+        )
+    endif()
+
+    set(CFG_BUILD_GPIO_EX 1)
+endif()
+
+if (DEFINED CFG_RGBTOMIPI_ENABLE)
+    add_definitions(
+        -DCFG_RGBTOMIPI_ENABLE
+    )
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_RGBTOMIPI_SPI0)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_RGBTOMIPI_SPI1)
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_IOEX_ENABLE)
+
+if (DEFINED CFG_SWUART_CODEC_ENABLE)
+    add_definitions(
+        -DCFG_RISC_ENABLE
+        -DCFG_SWUART_CODEC_ENABLE
+        -DCFG_SWUART_CODEC_BAUDRATE=${CFG_SWUART_CODEC_BAUDRATE}
+        -DCFG_SWUARTTX_CODEC_GPIO=${CFG_SWUARTTX_CODEC_GPIO}
+        -DCFG_SWUARTRX_CODEC_GPIO=${CFG_SWUARTRX_CODEC_GPIO}
+    )
+endif()
+
+if (DEFINED CFG_DBG_SWUART_CODEC)
+    add_definitions(
+        -DCFG_RISC_ENABLE
+        -DCFG_DBG_SWUART_CODEC
+        -DCFG_SWUARTDBGPRINTF_BAUDRATE=${CFG_SWUARTDBGPRINTF_BAUDRATE}
+        -DCFG_SWUARTDBGPRINTF_GPIO=${CFG_SWUARTDBGPRINTF_GPIO}
+    )
+endif()
+
+if (DEFINED CFG_SW_WIEGAND_ENABLE)
+    add_definitions(
+        -DCFG_RISC_ENABLE
+        -DCFG_SW_WIEGAND_ENABLE
+    )
+endif()
+
+if (DEFINED CFG_WIEGAND0_ENABLE)
+    add_definitions(
+        -DCFG_WIEGAND0_ENABLE
+        -DCFG_WIEGAND0_GPIO0=${CFG_WIEGAND0_GPIO0}
+        -DCFG_WIEGAND0_GPIO1=${CFG_WIEGAND0_GPIO1}
+    )
+
+    function(ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_WIEGAND0_BIT_ n)
+        if (DEFINED CFG_WIEGAND0_BIT_${n})
+            add_definitions(
+                -DWIEGAND0_BIT_COUNT=${n}
+            )
+        endif()
+    endfunction()
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_WIEGAND0_BIT_(26)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_WIEGAND0_BIT_(34)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_WIEGAND0_BIT_(37)
+    set(CFG_BUILD_WIEGAND 1)
+endif()
+
+if (DEFINED CFG_WIEGAND1_ENABLE)
+    add_definitions(
+        -DCFG_WIEGAND1_ENABLE
+        -DCFG_WIEGAND1_GPIO0=${CFG_WIEGAND1_GPIO0}
+        -DCFG_WIEGAND1_GPIO1=${CFG_WIEGAND1_GPIO1}
+    )
+
+    function(ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_WIEGAND1_BIT_ n)
+        if (DEFINED CFG_WIEGAND1_BIT_${n})
+            add_definitions(
+                -DWIEGAND1_BIT_COUNT=${n}
+            )
+        endif()
+    endfunction()
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_WIEGAND1_BIT_(26)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_WIEGAND1_BIT_(34)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_WIEGAND1_BIT_(37)
+    set(CFG_BUILD_WIEGAND 1)
+endif()
+
+if (DEFINED CFG_I2S_ENABLE)
+    add_definitions(
+        -DCFG_I2S_ENABLE
+    )
+
+    #ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_I2S_OUTPUT_PIN_ENABLE)
+    #ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_I2S_SPDIF_ENABLE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_BOOL(CFG_I2S_INTERNAL_CODEC)
+
+    if (DEFINED CFG_AXISPI_ENABLE)
+        add_definitions(
+            -DCFG_AXISPI_ENABLE
+        )
+        set(CFG_BUILD_AXISPI 1)
+    endif()
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DAC_port_I2C0)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DAC_port_I2C1)
+
+    set(CFG_BUILD_I2S 1)
+    add_definitions(
+        -DCFG_BUILD_I2S
+    )
+endif()
+
+if (DEFINED CFG_SPI_ENABLE)
+    add_definitions(
+        -DCFG_SPI_ENABLE
+    )
+    set(CFG_BUILD_SPI 1)
+endif()
+
+function(ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_UARTN_ENABLE n)
+    if (DEFINED CFG_UART${n}_ENABLE)
+        add_definitions(
+            -DCFG_UART${n}_ENABLE
+            -DCFG_UART${n}_BAUDRATE=${CFG_UART${n}_BAUDRATE}
+        )
+		if (DEFINED CFG_UART${n}_INTR)
+        add_definitions(
+            -DCFG_UART${n}_INTR
+            -DCFG_UART_INTR_BUF_SIZE=${CFG_UART_INTR_BUF_SIZE}
+        )
+		elseif (DEFINED CFG_UART${n}_DMA)
+		add_definitions(
+			-DCFG_UART${n}_DMA
+			-DCFG_UART_DMA_BUF_SIZE=${CFG_UART_DMA_BUF_SIZE}
+		)
+		elseif (DEFINED CFG_UART${n}_FIFO)
+		add_definitions(
+			-DCFG_UART${n}_FIFO
+		)
+		endif()
+    endif()
+endfunction()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_UARTN_ENABLE(0)
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_UARTN_ENABLE(1)
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_UARTN_ENABLE(2)
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_UARTN_ENABLE(3)
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_UARTN_ENABLE(4)
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_UARTN_ENABLE(5)
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_UART_FORCE_FLUSH)
+
+function(ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_RS485_N_ENABLE n)
+    if (DEFINED CFG_RS485_${n}_ENABLE)
+        add_definitions(
+            -DCFG_RS485_${n}_ENABLE
+            -DCFG_RS485_${n}_BAUDRATE=${CFG_RS485_${n}_BAUDRATE}
+        )
+		if (DEFINED CFG_RS485_${n}_INTR)
+        add_definitions(
+            -DCFG_RS485_${n}_INTR
+            -DCFG_RS485_INTR_BUF_SIZE=${CFG_RS485_INTR_BUF_SIZE}
+        )
+		elseif (DEFINED CFG_RS485_${n}_DMA)
+		add_definitions(
+			-DCFG_RS485_${n}_DMA
+			-DCFG_RS485_DMA_BUF_SIZE=${CFG_RS485_DMA_BUF_SIZE}
+		)
+		elseif (DEFINED CFG_RS485_${n}_FIFO)
+		add_definitions(
+			-DCFG_RS485_${n}_FIFO
+		)
+		endif()
+    endif()
+endfunction()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_RS485_N_ENABLE(0)
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_RS485_N_ENABLE(1)
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_RS485_N_ENABLE(2)
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_RS485_N_ENABLE(3)
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_RS485_N_ENABLE(4)
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_RS485_N_ENABLE(5)
+
+if (DEFINED CFG_RS485_INTR)
+    add_definitions(
+        -DCFG_RS485_INTR
+        -DCFG_RS485_BUF_SIZE=${CFG_RS485_BUF_SIZE}
+    )
+endif()
+
+if (DEFINED CFG_RS485_DMA)
+    add_definitions(
+        -DCFG_RS485_DMA
+        -DCFG_RS485_DMA_BUF_SIZE=${CFG_RS485_DMA_BUF_SIZE}
+    )
+endif()
+
+if ($ENV{CFG_PLATFORM} STREQUAL openrtos)
+    if (DEFINED CFG_USBHCC)
+        add_definitions(
+            -DCFG_USBHCC
+        )
+        set(CFG_BUILD_USBHCC 1)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBH_CD_HUB)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBH_CD_MST)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBH_CD_HID)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBH_CD_CDCACM)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBH_CD_CDCECM_HCC)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBH_CD_CDCECM)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBH_CD_CDCECM_EX)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBH_CD_PRINTER)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBH_CD_RNDIS)
+        ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_NET_ETHERNET_POLL_INTERVAL)
+        
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBHCC_DEVICE)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBD_USB0)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBD_USB1)
+        ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_USB_ID_PIN)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBD_CD_CDCACM)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBD_CD_MST)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBD_CD_HID)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBD_CD_PRINTER)
+  
+        if (DEFINED CFG_USBD_CD_MST)
+            add_definitions(
+                -DCFG_USBD_CD_MST_DISKS=${CFG_USBD_CD_MST_DISKS}
+            )
+        endif()
+    endif()
+endif()
+
+if ($ENV{CFG_PLATFORM} STREQUAL openrtos)
+    if (DEFINED CFG_USB0_ENABLE)
+        add_definitions(
+            -DCFG_USB0_ENABLE
+        )
+        set(CFG_BUILD_USB 1)
+        set(CFG_BUILD_LINUX 1)
+    endif()
+
+    if (DEFINED CFG_USB1_ENABLE)
+        add_definitions(
+            -DCFG_USB1_ENABLE
+        )
+        set(CFG_BUILD_USB 1)
+        set(CFG_BUILD_LINUX 1)
+    endif()
+
+
+    if (DEFINED CFG_USB_HID_ENABLE)
+        # USB Host
+        add_definitions(
+            -DCFG_USB_HID_ENABLE
+        )
+
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USB_HID)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USB_MOUSE)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USB_KBD)
+
+        set(CFG_BUILD_HID 1)
+    endif()
+
+    if (DEFINED CFG_USB_SERIAL)
+        add_definitions(
+            -DCFG_USB_SERIAL
+        )
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USB_OPTION)
+    endif()
+
+    if (DEFINED CFG_UVC_ENABLE)
+        add_definitions(
+            -DCFG_UVC_ENABLE
+        )
+        set(CFG_BUILD_UVC 1)
+    endif()
+
+    if (DEFINED CFG_HAVE_USBLP)
+        add_definitions(
+            -DCFG_HAVE_USBLP
+        )
+        set(CFG_BUILD_USBLP 1)
+    endif()
+endif()
+
+if (DEFINED CFG_USB0_ENABLE AND DEFINED CFG_USB1_ENABLE AND DEFINED CFG_MSC_ENABLE AND DEFINED CFG_M2D_ENABLE AND DEFINED CFG_CHIP_FT)
+    add_definitions(
+        -DCFG_CHIP_FT
+    )
+endif()
+
+if (DEFINED CFG_IRDA_ENABLE)
+    add_definitions(
+        -DCFG_IRDA_ENABLE
+    )
+    set(CFG_BUILD_IRDA 1)
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_IR0_ENABLE)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_IR1_ENABLE)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_IR2_ENABLE)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_IR3_ENABLE)
+
+if (DEFINED CFG_IR0_ENABLE OR DEFINED CFG_IR1_ENABLE OR DEFINED CFG_IR2_ENABLE OR DEFINED CFG_IR3_ENABLE)
+    add_definitions(
+        -DCFG_IR_VENDOR_CODE=${CFG_IR_VENDOR_CODE}
+        -DCFG_IR_PRESS_INTERVAL=${CFG_IR_PRESS_INTERVAL}
+    )
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_IR_REPEAT)
+endif()
+
+if (DEFINED CFG_KEYPAD_ENABLE)
+    add_definitions(
+        -DCFG_KEYPAD_ENABLE
+        -DCFG_KEYPAD_MODULE=${CFG_KEYPAD_MODULE}
+        -DCFG_KEYPAD_PRESS_INTERVAL=${CFG_KEYPAD_PRESS_INTERVAL}
+        -DCFG_KEYPAD_PROBE_INTERVAL=${CFG_KEYPAD_PROBE_INTERVAL}
+    )
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_KEYPAD_REPEAT)
+
+    if (DEFINED CFG_TOUCH_KEYPAD_SET_KEY_NUMBER_ENABLE)
+        add_definitions(
+            -DCFG_TOUCH_KEY_NUM=${CFG_TOUCH_KEY_NUM}
+        )
+    endif()
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TOUCH_KEYPAD_I2C0)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TOUCH_KEYPAD_I2C1)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TOUCH_KEYPAD_I2C2)
+endif()
+
+if (DEFINED CFG_TOUCH_ENABLE)
+    add_definitions(
+        -DCFG_TOUCH_ENABLE
+    )
+
+    if (DEFINED CFG_TOUCH_MODULE)
+        list (LENGTH CFG_TOUCH_MODULE count)
+        add_definitions(
+            -DCFG_TOUCH_MODULE_COUNT=${count}
+        )
+    endif()
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TOUCH_I2C0)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TOUCH_I2C1)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TOUCH_I2C2)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TOUCH_I2C3)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TOUCH_SPI)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TOUCH_CAPACITIVE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TOUCH_RESISTIVE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TOUCH_INTR)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TOUCH_MULTI_FINGER)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TOUCH_BUTTON)
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_TOUCH_X_MAX_VALUE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_TOUCH_Y_MAX_VALUE)
+
+    if (DEFINED CFG_TOUCH_ADVANCE_CONFIG)
+        add_definitions(
+            -DCFG_TOUCH_ADVANCE_CONFIG
+        )
+
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TOUCH_SWAP_XY)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TOUCH_REVERSE_X)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TOUCH_REVERSE_Y)
+        ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_TOUCH_I2C_SLAVE_ID)
+    endif()
+
+    set(CFG_BUILD_TSLIB 1)
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_FFMPEG_H264_SW)
+
+if (DEFINED CFG_BATTERY_ENABLE)
+    add_definitions(
+        -DCFG_BATTERY_ENABLE
+        -DCFG_BATTERY_MODULE="${CFG_BATTERY_MODULE}"
+    )
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_BATTERY_CHARGE_DETECT)
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_GSENSOR_ENABLE)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AMPLIFIER_ENABLE)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_LED_ENABLE)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SWITCH_ENABLE)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TUNER_ENABLE)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SENSOR_ENABLE)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_H264_ENCODER_ENABLE)
+
+if (DEFINED CFG_DUAL_STREAM_ENABLE)
+    add_definitions(
+        -DCFG_DUAL_STREAM
+    )
+endif()
+
+#SENSOR
+if (DEFINED CFG_SENSOR_ENABLE)
+    add_definitions(
+        -DCFG_CAPTURE_SENSOR=${CFG_CAPTURE_SENSOR}
+        -DCFG_CAPTURE_SENSOR_NAME="${CFG_CAPTURE_SENSOR}"
+        -DCFG_SN1_GPIO_RST=${CFG_GPIO_SN1_RST}
+        -DCFG_SN1_GPIO_PWN=${CFG_GPIO_SN1_PWN}
+        -DCFG_SN1_GPIO_LED=${CFG_GPIO_SN1_LED}
+        -DCFG_SN1_GPIO_MCLK=${CFG_GPIO_SN1_MCLK}
+    )
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SENSOR_RESETPIN_ENABLE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SENSOR_POWERDOWNPIN_ENABLE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SENSOR_LEDPIN_ENABLE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SENSOR_MCLKPIN_ENABLE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SENSOR_FLICK_50HZ)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SENSOR_FLICK_60HZ)
+
+    function(ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_SENSOR_IIC_ n)
+        if (DEFINED CFG_SENSOR_IIC${n})
+            add_definitions(
+                -DCFG_SENSOR_IIC_PORT=${n}
+            )
+        endif()
+    endfunction()
+    ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_SENSOR_IIC_(0)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_SENSOR_IIC_(1)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_SENSOR_IIC_(2)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_SENSOR_IIC_(3)
+endif()
+#H264 ENCODER
+if (DEFINED CFG_H264_ENCODER_ENABLE)
+    add_definitions(
+        -DSENSOR_WIDTH=${CFG_SENSOR_RESOLUTION_W}
+        -DSENSOR_HEIGHT=${CFG_SENSOR_RESOLUTION_H}
+        -DSENSOR_BITRATE=${CFG_SENSOR_BITRATE}
+        -DSENSOR_WIDTH_2=${CFG_SENSOR_RESOLUTION_W_2}
+        -DSENSOR_HEIGHT_2=${CFG_SENSOR_RESOLUTION_H_2}
+        -DSENSOR_BITRATE_2=${CFG_SENSOR_BITRATE_2}
+    )
+endif()
+
+if (DEFINED CFG_STNLCD_ENABLE)
+    add_definitions(
+        -DCFG_STNLCD_ENABLE
+        -DCFG_STNLCD_WIDTH=${CFG_STNLCD_WIDTH}
+        -DCFG_STNLCD_HEIGHT=${CFG_STNLCD_HEIGHT}
+    )
+endif()
+
+
+# Power
+if (DEFINED CFG_POWER_ON)
+    add_definitions(
+        -DCFG_POWER_ON
+    )
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_POWER_OFF)
+endif()
+
+if (DEFINED CFG_POWER_STANDBY)
+    add_definitions(
+        -DCFG_POWER_STANDBY
+        -DCFG_POWER_STANDBY_CPU_FREQ_RATIO=${CFG_POWER_STANDBY_CPU_FREQ_RATIO}
+        -DCFG_POWER_STANDBY_BUS_FREQ_RATIO=${CFG_POWER_STANDBY_BUS_FREQ_RATIO}
+    )
+endif()
+
+if (DEFINED CFG_POWER_SLEEP)
+    add_definitions(
+        -DCFG_POWER_SLEEP
+    )
+
+    if (DEFINED CFG_POWER_WAKEUP_DELAY)
+        add_definitions(
+            -DCFG_POWER_WAKEUP_DELAY
+            -DCFG_POWER_WAKEUP_DELAYLOOP=${CFG_POWER_WAKEUP_DELAYLOOP}
+        )
+    elseif (DEFINED CFG_POWER_WAKEUP_TOUCH_ONE_CLICK)
+        add_definitions(
+            -DCFG_POWER_WAKEUP_TOUCH_ONE_CLICK
+        )
+    elseif (DEFINED CFG_POWER_WAKEUP_TOUCH_DOUBLE_CLICK)
+        add_definitions(
+            -DCFG_POWER_WAKEUP_TOUCH_DOUBLE_CLICK
+            -DCFG_POWER_WAKEUP_DOUBLE_CLICK_INTERVAL=${CFG_POWER_WAKEUP_DOUBLE_CLICK_INTERVAL}
+        )
+    elseif (DEFINED CFG_POWER_WAKEUP_KEYPAD)
+        add_definitions(
+            -DCFG_POWER_WAKEUP_KEYPAD
+            -DCFG_POWER_WAKEUP_KEYNUM=${CFG_POWER_WAKEUP_KEYNUM}
+        )
+    elseif (DEFINED CFG_POWER_WAKEUP_GPIO)
+        add_definitions(
+            -DCFG_POWER_WAKEUP_GPIO
+            -DCFG_POWER_WAKEUP_GPIO_PIN=${CFG_POWER_WAKEUP_GPIO_PIN}
+        )
+    endif()
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_POWER_WAKEUP_IR)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_POWER_WAKEUP_UART)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_POWER_WAKEUP_WOL)
+
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_POWER_HIBERNATION)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_POWER_SUSPEND)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_POWER_DOZE)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_POWER_TICKLESS_IDLE)
+
+if (DEFINED CFG_ALT_CPU_ENABLE)
+    set(CFG_BUILD_RISC 1)
+    set(CFG_BUILD_ALT_CPU 1)
+    add_definitions(
+        -DCFG_RISC_ENABLE
+        -DCFG_ALT_CPU_ENABLE
+    )
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_RSL_MASTER)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_RSL_SLAVE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_PATTERN_GEN)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_OLED_CTRL)
+    if (DEFINED CFG_SW_PWM)
+        add_definitions(
+            -DCFG_SW_PWM
+        )
+
+        function(ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_SW_PWMN_ENABLE n)
+            if (DEFINED CFG_SW_PWM${n}_ENABLE)
+                add_definitions(
+                    -DCFG_SW_PWM${n}_ENABLE
+                    -DCFG_SW_PWM${n}_CLOCK=${CFG_SW_PWM${n}_CLOCK}
+                    -DCFG_SW_PWM${n}_DUTY_CYCLE=${CFG_SW_PWM${n}_DUTY_CYCLE}
+                    -DCFG_GPIO_SW_PWM${n}=${CFG_GPIO_SW_PWM${n}}
+                )
+            endif()
+        endfunction()
+
+        ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_SW_PWMN_ENABLE(0)
+        ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_SW_PWMN_ENABLE(1)
+        ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_SW_PWMN_ENABLE(2)
+        ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_SW_PWMN_ENABLE(3)
+    endif()
+
+    if (DEFINED CFG_SW_UART)
+        add_definitions(
+            -DCFG_SW_UART
+            -DCFG_SW_UART_BAUDRATE=${CFG_SW_UART_BAUDRATE}
+            -DCFG_GPIO_SW_UART_TX=${CFG_GPIO_SW_UART_TX}
+            -DCFG_GPIO_SW_UART_RX=${CFG_GPIO_SW_UART_RX}
+        )
+    endif()
+
+    if (DEFINED CFG_SW_SERIAL_PORT)
+        add_definitions(
+            -DCFG_SW_SERIAL_PORT
+        )
+        if (DEFINED CFG_SW_RS232_0_ENABLE)
+            add_definitions(
+                -DCFG_SW_RS232_0_ENABLE
+                -DCFG_SW_RS232_0_BAUDRATE=${CFG_SW_RS232_0_BAUDRATE}
+                -DCFG_GPIO_SW_RS232_0_TX=${CFG_GPIO_SW_RS232_0_TX}
+                -DCFG_GPIO_SW_RS232_0_RX=${CFG_GPIO_SW_RS232_0_RX}
+            )
+        endif()
+
+        if (DEFINED CFG_SW_RS232_1_ENABLE)
+            add_definitions(
+                -DCFG_SW_RS232_1_ENABLE
+                -DCFG_SW_RS232_1_BAUDRATE=${CFG_SW_RS232_1_BAUDRATE}
+                -DCFG_GPIO_SW_RS232_1_TX=${CFG_GPIO_SW_RS232_1_TX}
+                -DCFG_GPIO_SW_RS232_1_RX=${CFG_GPIO_SW_RS232_1_RX}
+            )
+        endif()
+
+        if (DEFINED CFG_SW_RS485_0_ENABLE)
+            add_definitions(
+                -DCFG_SW_RS485_0_ENABLE
+                -DCFG_SW_RS485_0_BAUDRATE=${CFG_SW_RS485_0_BAUDRATE}
+                -DCFG_GPIO_SW_RS485_0_TX=${CFG_GPIO_SW_RS485_0_TX}
+                -DCFG_GPIO_SW_RS485_0_TX_ENABLE=${CFG_GPIO_SW_RS485_0_TX_ENABLE}
+                -DCFG_GPIO_SW_RS485_0_RX=${CFG_GPIO_SW_RS485_0_RX}
+            )
+        endif()
+
+        if (DEFINED CFG_SW_RS485_1_ENABLE)
+            add_definitions(
+                -DCFG_SW_RS485_1_ENABLE
+                -DCFG_SW_RS485_1_BAUDRATE=${CFG_SW_RS485_1_BAUDRATE}
+                -DCFG_GPIO_SW_RS485_1_TX=${CFG_GPIO_SW_RS485_1_TX}
+                -DCFG_GPIO_SW_RS485_1_TX_ENABLE=${CFG_GPIO_SW_RS485_1_TX_ENABLE}
+                -DCFG_GPIO_SW_RS485_1_RX=${CFG_GPIO_SW_RS485_1_RX}
+            )
+        endif()
+    endif()
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_ALT_CPU_CUSTOM_DEVICE)
+endif()
+
+if (DEFINED CFG_RISC2_ENABLE)
+    set(CFG_BUILD_RISC 1)
+    set(CFG_BUILD_RISC2 1)
+    add_definitions(
+        -DCFG_RISC_ENABLE
+        -DCFG_RISC2_ENABLE
+    )
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_RISC2_TEST_DEVICE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_RISC2_OPUS_CODEC)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_RISC2_SW_IRRX)
+endif()
+#endif
+
+# SARADC
+if (DEFINED CFG_SARADC_ENABLE)
+    set(CFG_BUILD_SARADC 1)
+    add_definitions(
+        -DCFG_SARADC_ENABLE
+        -DCFG_SARADC_VALID_XAIN=${CFG_SARADC_VALID_XAIN}
+        -DCFG_GPIO_XAIN_0_RX=${CFG_GPIO_XAIN_0_RX}
+        -DCFG_GPIO_XAIN_1_RX=${CFG_GPIO_XAIN_1_RX}
+        -DCFG_GPIO_XAIN_2_RX=${CFG_GPIO_XAIN_2_RX}
+        -DCFG_GPIO_XAIN_3_RX=${CFG_GPIO_XAIN_3_RX}
+    )
+
+    if (DEFINED CFG_SARADC_CALIBRATION_ENABLE)
+        add_definitions(
+            -DCFG_SARADC_CALIBRATION_ENABLE
+            -DCFG_SARADC_CALIBRATION_XAIN=${CFG_SARADC_CALIBRATION_XAIN}
+            -DCFG_SARADC_CALIBRATION_VOLTAGE=${CFG_SARADC_CALIBRATION_VOLTAGE}
+        )
+    endif()
+endif()
+
+# GPIO
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_GPIO_CARD_DETECT_INTR)
+
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_SD0_CARD_DETECT)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SD0_CARD_DETECT_ACTIVE_HIGH)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_SD0_DELAY_TIME)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_SD0_POWER_ENABLE)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_SD0_WRITE_PROTECT)
+
+if (DEFINED CFG_GPIO_SD0_IO)
+    add_definitions(
+        -DCFG_GPIO_SD0_IO=${CFG_GPIO_SD0_IO}
+    )
+endif()
+
+	ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_GPIO_SD1_WIFI_POWER_ENABLE)
+	ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SD1_WIFI_DETECT_ACTIVE_HIGH)
+if (DEFINED CFG_GPIO_SD1_WIFI_POWER_ENABLE)
+	add_definitions(
+        -DCFG_GPIO_SD1_WIFI_POWER_PIN=${CFG_GPIO_SD1_WIFI_POWER_PIN}
+	)
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_SD1_CARD_DETECT)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SD1_CARD_DETECT_ACTIVE_HIGH)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_SD1_DELAY_TIME)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_SD1_POWER_ENABLE)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_SD1_WRITE_PROTECT)
+
+if (DEFINED CFG_GPIO_SD1_IO)
+    add_definitions(
+        -DCFG_GPIO_SD1_IO=${CFG_GPIO_SD1_IO}
+    )
+endif()
+
+if (DEFINED CFG_GPIO_CF_CARD_DETECT)
+    add_definitions(
+        -DCFG_GPIO_CF_CARD_DETECT=${CFG_GPIO_CF_CARD_DETECT}
+        -DCFG_GPIO_CF_POWER_ENABLE=${CFG_GPIO_CF_POWER_ENABLE}
+    )
+endif()
+
+if (DEFINED CFG_EXT_WATCHDOG_ENABLE)
+    add_definitions(
+        -DCFG_EXT_WATCHDOG_ENABLE=${CFG_EXT_WATCHDOG_ENABLE}
+        -DCFG_GPIO_EXT_WATCHDOG=${CFG_GPIO_EXT_WATCHDOG}
+    )
+endif()
+
+if (DEFINED CFG_GPIO_BACKLIGHT_PWM)
+    add_definitions(
+        -DCFG_GPIO_BACKLIGHT_PWM=${CFG_GPIO_BACKLIGHT_PWM}
+        -DCFG_GPIO_PWM_NUMBER=${CFG_GPIO_PWM_NUMBER}
+        -DCFG_GPIO_PWM_MODE=${CFG_GPIO_PWM_MODE}
+    )
+endif()
+
+if (DEFINED CFG_UART_ENABLE)
+	set(CFG_BUILD_UART 1)
+endif()
+
+function(ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_GPIO_UARTN_TX n)
+    if (DEFINED CFG_GPIO_UART${n}_TX)
+        add_definitions(
+            -DCFG_GPIO_UART${n}_TX=${CFG_GPIO_UART${n}_TX}
+            -DCFG_GPIO_UART${n}_RX=${CFG_GPIO_UART${n}_RX}
+        )
+    endif()
+endfunction()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_GPIO_UARTN_TX(0)
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_GPIO_UARTN_TX(1)
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_GPIO_UARTN_TX(2)
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_GPIO_UARTN_TX(3)
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_GPIO_UARTN_TX(4)
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_GPIO_UARTN_TX(5)
+
+function(ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_GPIO_RS485_N_TX n)
+    if (DEFINED CFG_GPIO_RS485_${n}_TX)
+        add_definitions(
+            -DCFG_GPIO_RS485_${n}_TX=${CFG_GPIO_RS485_${n}_TX}
+            -DCFG_GPIO_RS485_${n}_TX_ENABLE=${CFG_GPIO_RS485_${n}_TX_ENABLE}
+            -DCFG_GPIO_RS485_${n}_RX=${CFG_GPIO_RS485_${n}_RX}
+        )
+    endif()
+endfunction()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_GPIO_RS485_N_TX(0)
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_GPIO_RS485_N_TX(1)
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_GPIO_RS485_N_TX(2)
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_GPIO_RS485_N_TX(3)
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_GPIO_RS485_N_TX(4)
+ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_GPIO_RS485_N_TX(5)
+
+if (DEFINED CFG_GPIO_IIC0_CLK)
+    add_definitions(
+        -DCFG_GPIO_IIC0_CLK=${CFG_GPIO_IIC0_CLK}
+        -DCFG_GPIO_IIC0_DATA=${CFG_GPIO_IIC0_DATA}
+        -DCFG_GPIO_IIC0_MODE=${CFG_GPIO_IIC0_MODE}
+    )
+endif()
+
+if (DEFINED CFG_GPIO_IIC1_CLK)
+    add_definitions(
+        -DCFG_GPIO_IIC1_CLK=${CFG_GPIO_IIC1_CLK}
+        -DCFG_GPIO_IIC1_DATA=${CFG_GPIO_IIC1_DATA}
+        -DCFG_GPIO_IIC1_MODE=${CFG_GPIO_IIC1_MODE}
+    )
+endif()
+
+if (DEFINED CFG_GPIO_IIC2_CLK)
+    add_definitions(
+        -DCFG_GPIO_IIC2_CLK=${CFG_GPIO_IIC2_CLK}
+        -DCFG_GPIO_IIC2_DATA=${CFG_GPIO_IIC2_DATA}
+    )
+endif()
+
+if (DEFINED CFG_GPIO_IIC3_CLK)
+    add_definitions(
+        -DCFG_GPIO_IIC3_CLK=${CFG_GPIO_IIC3_CLK}
+        -DCFG_GPIO_IIC3_DATA=${CFG_GPIO_IIC3_DATA}
+    )
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_IR0_RX)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_IR0_TX)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_IR1_RX)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_IR1_TX)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_IR2_RX)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_IR2_TX)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_IR3_RX)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_IR3_TX)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_KEYPAD)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_TOUCH_INT)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_I2S)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_I2S_HDMIRX)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_I2S_HDMITX)
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_GPIO_TOUCH_INT_ACTIVE_HIGH)
+
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_TOUCH_WAKE)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_TOUCH_RESET)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_POWER_ON)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_POWER_OFF_DETECT)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_BATTERY)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_BATTERY_CHARGE_DETECT)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_GSENSOR)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_HEADSET)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_SPEAKER)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_AMPLIFIER_ENABLE)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_AMPLIFIER_MUTE)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_ETHERNET_LINK -1)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_ETHERNET_WAKE_ON_LAN)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_LED)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_SWITCH)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_TUNER_ENABLE)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_LCD_PWR_EN)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_GPIO_LCD_PWR_EN_ACTIVE_LOW)
+
+if (DEFINED CFG_GPIO_STNLCD_A0)
+    add_definitions(
+        #        -DCFG_GPIO_STNLCD_CS=${CFG_GPIO_STNLCD_CS}
+        -DCFG_GPIO_STNLCD_RST=${CFG_GPIO_STNLCD_RST}
+        -DCFG_GPIO_STNLCD_A0=${CFG_GPIO_STNLCD_A0}
+        #        -DCFG_GPIO_STNLCD_SCLK=${CFG_GPIO_STNLCD_SCLK}
+        #        -DCFG_GPIO_STNLCD_SID=${CFG_GPIO_STNLCD_SID}
+        -DCFG_GPIO_STNLCD_WR=${CFG_GPIO_STNLCD_WR}
+        -DCFG_GPIO_STNLCD_RD=${CFG_GPIO_STNLCD_RD}
+        -DCFG_GPIO_STNLCD_DATA=${CFG_GPIO_STNLCD_DATA}
+    )
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_MIPI_RESET)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_SWUART)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_SWUART_TIMER)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_GPIO_DEMOD_SUSPEND)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_IIC0_GPIO_CONFIG_1)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_IIC0_GPIO_CONFIG_2)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_IIC0_GPIO_CONFIG_3)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_IIC1_GPIO_CONFIG_1)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_IIC1_GPIO_CONFIG_2)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_IIC1_GPIO_CONFIG_3)
+
+if (DEFINED CFG_DAC_USE_EXTERNAL_DEPOP_CIRCUIT)
+    add_definitions(
+        -DCFG_DAC_USE_EXTERNAL_DEPOP_CIRCUIT=${CFG_DAC_USE_EXTERNAL_DEPOP_CIRCUIT}
+        -DCFG_DAC_EXT_DEPOP_GPIO_PIN=${CFG_DAC_EXT_DEPOP_GPIO_PIN}
+        -DCFG_DAC_EXT_DEPOP_DELAY_MS_T1=${CFG_DAC_EXT_DEPOP_DELAY_MS_T1}
+        -DCFG_DAC_EXT_DEPOP_DELAY_MS_T2=${CFG_DAC_EXT_DEPOP_DELAY_MS_T2}
+    )
+endif()
+
+if (DEFINED CFG_RSL_MASTER)
+    add_definitions(
+        -DCFG_GPIO_RSL_MASTER_CLK=${CFG_GPIO_RSL_MASTER_CLK}
+        -DCFG_GPIO_RSL_MASTER_DATA=${CFG_GPIO_RSL_MASTER_DATA}
+    )
+endif()
+
+# HTTP Server
+if (DEFINED CFG_BUILD_HTTPSERVER)
+    set(CFG_BUILD_MICROHTTPD 1)
+    set(CFG_BUILD_TRE 1)
+endif()
+
+if (DEFINED CFG_BUILD_MICROHTTPD)
+    set(CFG_NET_ENABLE 1)
+endif()
+
+if (DEFINED CFG_BUILD_IOT)
+    add_definitions(
+        -DCFG_IOT_ENABLE
+    )
+endif()
+
+# Network
+if (DEFINED CFG_NET_ENABLE)
+#    set(CFG_BUILD_LWIP 1)
+
+    add_definitions(
+        -DCFG_NET_ENABLE
+    )
+
+	ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_LWIP)
+	ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_LWIP_2)
+
+	if (DEFINED CFG_NET_LWIP)
+		add_definitions(
+			-DCFG_NET_LWIP
+		)
+		set(CFG_BUILD_LWIP 1)
+	 elseif (DEFINED CFG_NET_LWIP_2)
+		add_definitions(
+			-DCFG_NET_LWIP_2
+		)
+		set(CFG_BUILD_LWIP_2 1)
+
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_LWIP_PPPOE)
+	endif()
+
+    if (DEFINED CFG_NET_ETHERNET)
+        add_definitions(
+            -DCFG_NET_ETHERNET
+            -DCFG_GPIO_ETHERNET=${CFG_GPIO_ETHERNET}
+            -DCFG_NET_ETHERNET_POLL_INTERVAL=${CFG_NET_ETHERNET_POLL_INTERVAL}
+            -DCFG_NET_ETHERNET_COUNT=${CFG_NET_ETHERNET_COUNT}
+        )
+
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_ETHERNET_LINK_INTR)
+
+        ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_NET_ETHERNET_PHY_ADDR -1)
+
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_ETHERNET_WAKE_ON_LAN)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_ETHERNET_DHCP)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_ETHERNET_MULTI_INTERFACE_DHCP)
+        #ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_ETHERNET_DHCP_BY_DNS)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_ETHERNET_AUTOIP)
+		ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_ETHERNET_DETECT_IP)
+		ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_ETHERNET_DETECT_IP_JUMP)
+		ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_ETHERNET_DETECT_IP_DHCP)
+
+        #ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_NAT)
+        if (DEFINED CFG_NET_NAT)
+            add_definitions(
+                -DIP_NAT=1
+                -DCFG_NET_NAT=1
+            )
+            if (DEFINED CFG_NET_NAT_WAN_DHCP)
+            add_definitions(
+                -DCFG_NET_NAT_WAN_DHCP=1
+            )
+            else()
+            add_definitions(
+                -DCFG_NET_NAT_WAN_IPADDR="${CFG_NET_NAT_WAN_IPADDR}"
+                -DCFG_NET_NAT_WAN_NETMASK="${CFG_NET_NAT_WAN_NETMASK}"
+                -DCFG_NET_NAT_WAN_GATEWAY="${CFG_NET_NAT_WAN_GATEWAY}"
+            )
+            endif()
+            if (DEFINED CFG_NET_NAT_LAN_DHCP)
+            add_definitions(
+                -DCFG_NET_NAT_LAN_DHCP=1
+            )
+            else()
+            add_definitions(
+                -DCFG_NET_NAT_LAN_IPADDR="${CFG_NET_NAT_LAN_IPADDR}"
+                -DCFG_NET_NAT_LAN_NETMASK="${CFG_NET_NAT_LAN_NETMASK}"
+                -DCFG_NET_NAT_LAN_GATEWAY="${CFG_NET_NAT_LAN_GATEWAY}"
+            )
+            endif()
+            if (DEFINED CFG_NET_NAT_LANONLYPORT)
+              if (DEFINED CFG_NET_NAT_LANONLY_PORT00)
+                add_definitions(
+                  -DCFG_NET_NAT_LANONLY_PORT00=1
+                  -DCFG_NET_NAT_LANONLY_PORT01=0
+                  -DCFG_NET_NAT_LANONLY_PORT02=0
+                )
+              elseif (DEFINED CFG_NET_NAT_LANONLY_PORT01)
+                add_definitions(
+                  -DCFG_NET_NAT_LANONLY_PORT00=0
+                  -DCFG_NET_NAT_LANONLY_PORT01=1
+                  -DCFG_NET_NAT_LANONLY_PORT02=0
+                )
+              elseif (DEFINED CFG_NET_NAT_LANONLY_PORT02)
+                add_definitions(
+                  -DCFG_NET_NAT_LANONLY_PORT00=0
+                  -DCFG_NET_NAT_LANONLY_PORT01=0
+                  -DCFG_NET_NAT_LANONLY_PORT02=1
+                )
+              else()
+                add_definitions(
+                    -DCFG_NET_NAT_LANONLY_PORT00=0
+                    -DCFG_NET_NAT_LANONLY_PORT01=0
+                    -DCFG_NET_NAT_LANONLY_PORT02=0
+                )
+              endif()
+            else()
+              add_definitions(
+                  -DCFG_NET_NAT_LANONLY_PORT00=0
+                  -DCFG_NET_NAT_LANONLY_PORT01=0
+                  -DCFG_NET_NAT_LANONLY_PORT02=0
+              )
+            endif()
+        endif()
+
+        if (NOT DEFINED CFG_NET_ETHERNET_DHCP AND NOT DEFINED CFG_NET_ETHERNET_AUTOIP)
+            add_definitions(
+                -DCFG_NET_ETHERNET_IPADDR="${CFG_NET_ETHERNET_IPADDR}"
+                -DCFG_NET_ETHERNET_NETMASK="${CFG_NET_ETHERNET_NETMASK}"
+                -DCFG_NET_ETHERNET_GATEWAY="${CFG_NET_ETHERNET_GATEWAY}"
+            )
+        endif()
+
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_ETHERNET_MULTI_INTERFACE)
+        #    if (DEFINED CFG_NET_ETHERNET_MULTI_INTERFACE)
+        #        add_definitions(
+        #            -DCFG_NET_ETHERNET_INTERFACE_0="${CFG_NET_ETHERNET_INTERFACE_0}"
+        #            -DCFG_NET_ETHERNET_INTERFACE_1="${CFG_NET_ETHERNET_INTERFACE_1}"
+        #        )
+        #    endif()
+
+        if (DEFINED CFG_NET_ETHERNET_MAC_ADDR_RANDOM)
+            add_definitions(
+                -DCFG_NET_ETHERNET_MAC_ADDR_RANDOM
+            )
+        else()
+            add_definitions(
+                -DCFG_NET_ETHERNET_MAC_ADDR_DEFAULT=${CFG_NET_ETHERNET_MAC_ADDR_DEFAULT}
+            )
+        endif()
+
+        if (DEFINED CFG_NET_ETHERNET_MAC_ADDR_STORAGE)
+            add_definitions(
+                -DCFG_NET_ETHERNET_MAC_ADDR_STORAGE
+                -DCFG_NET_ETHERNET_MAC_ADDR_POS=${CFG_NET_ETHERNET_MAC_ADDR_POS}
+                -DCFG_NET_ETHERNET_MAC_ADDR_VERIFY_CODE="${CFG_NET_ETHERNET_MAC_ADDR_VERIFY_CODE}"
+            )
+
+            ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_ETHERNET_MAC_ADDR_NAND)
+            ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_ETHERNET_MAC_ADDR_NOR)
+            ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_ETHERNET_MAC_ADDR_SD0)
+            ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_ETHERNET_MAC_ADDR_SD1)
+            ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_ETHERNET_MAC_ADDR_UPGRADE)
+        endif()
+
+        if ($ENV{CFG_PLATFORM} STREQUAL openrtos)
+            set(CFG_BUILD_MAC 1)
+
+            add_definitions(
+                -DCFG_NET_MAC_CLOCK_INVERSE=${CFG_NET_MAC_CLOCK_INVERSE}
+                -DCFG_NET_MAC_CLOCK_DELAY=${CFG_NET_MAC_CLOCK_DELAY}
+                -DCFG_NET_MAC_RXD_DELAY=${CFG_NET_MAC_RXD_DELAY}
+            )
+
+            ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_RTL8201FL)
+            ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_IP101GR)
+            ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_DM9162)
+            ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_YT8512C)
+            ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_LAN8720)
+            ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_RTL8211F)
+            ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_IP175LLF)
+
+            if (DEFINED CFG_NET_RTL8304MB)
+                add_definitions(
+                    -DCFG_NET_RTL8304MB
+                )
+                set(CFG_BUILD_RTL8304MB 1)
+            endif()
+
+            if (DEFINED CFG_NET_RTL8363NB)
+                add_definitions(
+                    -DCFG_NET_RTL8363NB
+                )
+                set(CFG_BUILD_RTL8363NB 1)
+            endif()
+
+            ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_MAC_INIT_ON_BOOTLOADER)
+        endif()
+
+        if (DEFINED CFG_NET_AMEBA_SDIO)
+            add_definitions(
+                -DCFG_NET_AMEBA_SDIO
+            )
+            set(CFG_BUILD_NET 1)
+            set(CFG_BUILD_AMEBA_SDIO 1)
+        endif()
+    else()
+        add_definitions(
+            -DCFG_NET_ETHERNET_PHY_ADDR=-1
+            -DCFG_NET_ETHERNET_COUNT=1
+        )
+    endif()
+
+    if (DEFINED CFG_NET_WIFI)
+        add_definitions(
+            -DCFG_NET_WIFI
+            -DCFG_NET_WIFI_POLL_INTERVAL=${CFG_NET_WIFI_POLL_INTERVAL}
+        )
+
+		ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_WIFI_USB)
+		ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_WIFI_SDIO)
+
+        function(ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_NET_WIFI_ wifi build)
+            if (DEFINED CFG_NET_WIFI_${wifi})
+                set(CFG_BUILD_${build} 1 PARENT_SCOPE)
+                add_definitions(
+                    -DCFG_NET_WIFI_${wifi}
+                )
+            endif()
+        endfunction()
+
+        ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_NET_WIFI_(8188CUS WIFI)
+        ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_NET_WIFI_(8188EUS WIFI_EUS)
+        #ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_NET_WIFI_(8188EUS_NEW WIFI_EUS_NEW)
+		ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_NET_WIFI_(SDIO_NGPL NON_GPL_WIFI)
+        ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_NET_WIFI_(SDIO_NGPL_8723DS NON_GPL_WIFI_8723D)
+		ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_WIFI_SDIO_MT7682)
+        #ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_NET_WIFI_(5G WIFI_5G)
+        ITE_ADD_DEFINITIONS_IF_DEFINED_CFG_NET_WIFI_(8188FTV WIFI_FTV)
+		ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_WIFI_SDIO_NGPL_AP6256)
+		ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_WIFI_SDIO_NGPL_AP6236)
+		ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_WIFI_SDIO_NGPL_AP6181)
+
+		if (DEFINED CFG_NET_WIFI_SDIO_MT7682)
+                add_definitions(
+                    -DCFG_NET_WIFI_SDIO_MT7682
+                )
+                set(CFG_BUILD_MT7682 1)
+        endif()
+
+    if (DEFINED CFG_NET_WIFI_SDIO_NGPL_AP6256 OR DEFINED CFG_NET_WIFI_SDIO_NGPL_AP6236 OR DEFINED CFG_NET_WIFI_SDIO_NGPL_AP6181)
+    	set(CFG_BUILD_NON_GPL_WIFI_MHD 1)
+        add_definitions(
+            -DCFG_NET_APXXXX_WIFI_OOB_PIN_NUM=${CFG_NET_APXXXX_WIFI_OOB_PIN_NUM}
+            -DCFG_NET_APXXXX_WIFI_REG_ON_PIN_NUM=${CFG_NET_APXXXX_WIFI_REG_ON_PIN_NUM}
+        )    	    	
+    endif() 
+    
+    endif()
+
+    if (DEFINED CFG_NET_WIFI_SDIO_NGPL OR DEFINED CFG_NET_WIFI_SDIO_NGPL_8723DS OR DEFINED CFG_NET_WIFI_SDIO_MT7682 OR DEFINED CFG_NET_WIFI_SDIO_NGPL_AP6256 OR DEFINED CFG_NET_WIFI_SDIO_NGPL_AP6236 OR DEFINED CFG_NET_WIFI_SDIO_NGPL_AP6181)
+    	set(CFG_BUILD_DHCPS 1)
+    endif()
+
+
+    if (DEFINED CFG_NET_WIFI_WPA)
+        add_definitions(
+            -DCFG_NET_WIFI_WPA
+        )
+        set(CFG_BUILD_WIFI_WPA 1)
+        set(CFG_BUILD_OPENSSL 1)
+    endif()
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_WIFI_MAY_NOT_EXIST)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_WIFI_SDIO_POWER_ON_OFF_USER_DEFINED)
+    if (DEFINED CFG_NET_WIFI_HOSTAPD)
+        add_definitions(
+            -DCFG_NET_WIFI_HOSTAPD
+        )
+        set(CFG_BUILD_WIFI_HOSTAPD 1)
+        set(CFG_BUILD_OPENSSL 1)
+        set(CFG_BUILD_DHCPS 1)
+    endif()
+
+    if (DEFINED CFG_NET_WIFI_HOSTAPD AND DEFINED CFG_NET_WIFI)
+        add_definitions(
+            -DCFG_NET_WIFI_IPADDR="${CFG_NET_WIFI_IPADDR}"
+            -DCFG_NET_WIFI_NETMASK="${CFG_NET_WIFI_NETMASK}"
+            -DCFG_NET_WIFI_GATEWAY="${CFG_NET_WIFI_GATEWAY}"
+            -DCFG_NET_WIFI_SSID="${CFG_NET_WIFI_SSID}"
+            -DCFG_NET_WIFI_CHANNEL="${CFG_NET_WIFI_CHANNEL}"
+            -DCFG_NET_WIFI_HIDDENSSID="${CFG_NET_WIFI_HIDDENSSID}"
+        )
+    endif()
+
+    if (DEFINED CFG_NET_WIFI_WPA_ENABLE)
+        add_definitions(
+            -DCFG_NET_WIFI_PW="${CFG_NET_WIFI_PW}"
+        )
+    endif()
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_WIFI_FIND_BEST_CHANNEL)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_WIFI_TRANS_LED)
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_NET_WIFI_TRANS_LED_NUM)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_STRING_VALUE(CFG_NET_WIFI_MP_SSID)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_STRING_VALUE(CFG_NET_WIFI_MP_PASSWORD)
+    ITE_ADD_DEFINITIONS_IF_DEFINED_STRING_VALUE(CFG_NET_WIFI_MP_SECURITY)
+
+    if (DEFINED CFG_NET_WIFI_MGR)
+        add_definitions(
+            -DCFG_BUILD_WIFI_MGR
+        )
+        set(CFG_BUILD_WIFI_MGR 1)
+    endif()
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED_STRING_VALUE(CFG_NET_WIFI_80211N)
+	ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_WIFI_VIDEO_DOORBELL)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_ETHERNET_4G)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_N720_4G)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_AIR720SL_4G)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_L718_4G)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_L610_4G)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_M8910DL_4G)
+    
+    if (DEFINED CFG_NET_L718_4G)
+        add_definitions(
+            -DCFG_NET_L718_4G_DELAY=${CFG_NET_L718_4G_DELAY}
+        )
+		ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_L718_4G_USB0)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_L718_4G_USB1)
+    endif()
+
+
+    if (DEFINED CFG_NET_HTTP)
+        add_definitions(
+            -DCFG_NET_HTTP
+        )
+        #set(CFG_BUILD_POLARSSL 1)
+        set(CFG_BUILD_CURL 1)
+        set(CFG_BUILD_ZLIB 1)
+		set(CFG_BUILD_MBEDTLS 1)
+		#set(CFG_BUILD_IPERF 1)
+    endif()
+
+    if (DEFINED CFG_NET_FTP)
+        add_definitions(
+            -DCFG_NET_FTP
+        )
+        set(CFG_BUILD_CURL 1)
+        set(CFG_BUILD_ZLIB 1)
+
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_FTP_SERVER)
+    endif()
+
+    if (DEFINED CFG_NET_TFTP)
+        add_definitions(
+            -DCFG_NET_TFTP
+        )
+        set(CFG_BUILD_CURL 1)
+        set(CFG_BUILD_ZLIB 1)
+    endif()
+
+    if (DEFINED CFG_NET_SMTP)
+        add_definitions(
+            -DCFG_NET_SMTP
+        )
+        set(CFG_BUILD_CURL 1)
+        set(CFG_BUILD_ZLIB 1)
+    endif()
+
+    if (DEFINED CFG_NET_UPNP)
+        add_definitions(
+            -DCFG_NET_UPNP
+        )
+        set(CFG_BUILD_UPNP 1)
+    endif()
+
+    if (DEFINED CFG_NET_URENDER)
+        add_definitions(
+            -DCFG_NET_URENDER
+        )
+        set(CFG_BUILD_URENDER  1)
+    endif()
+
+    if (DEFINED CFG_BUILD_URENDER)
+        add_definitions(
+            -DCFG_NET_URENDER
+            -DCFG_NET_URENDER_CONFIG="${CFG_NET_URENDER_CONFIG}"
+            -DCFG_NET_URENDER_SYSTEMNAME="${CFG_NET_URENDER_SYSTEMNAME}"
+            -DCFG_NET_URENDER_PORT="${CFG_NET_URENDER_PORT}"
+            -DCFG_NET_URENDER_FRIENDLYNAME="${CFG_NET_URENDER_FRIENDLYNAME}"
+            -DCFG_NET_URENDER_MENUFACTURER="${CFG_NET_URENDER_MENUFACTURER}"
+            -DCFG_NET_URENDER_MENUFACTURERURL="${CFG_NET_URENDER_MENUFACTURERURL}"
+            -DCFG_NET_URENDER_MODELDESCRIPTION="${CFG_NET_URENDER_MODELDESCRIPTION}"
+            -DCFG_NET_URENDER_MODELNAME="${CFG_NET_URENDER_MODELNAME}"
+            -DCFG_NET_URENDER_MODELNUMBER="${CFG_NET_URENDER_MODELNUMBER}"
+            -DCFG_NET_URENDER_MODELURL="${CFG_NET_URENDER_MODELURL}"
+            -DCFG_NET_URENDER_SERIALNUMBER="${CFG_NET_URENDER_SERIALNUMBER}"
+            -DCFG_NET_URENDER_WEBSERVER_HOMEPAGE="${CFG_NET_URENDER_WEBSERVER_HOMEPAGE}"
+            -DCFG_NET_URENDER_CONFIG_INI_FILE="${CFG_NET_URENDER_CONFIG_INI_FILE}"
+        )
+    endif()
+
+    if (DEFINED CFG_NET_WAC)
+        add_definitions(
+            -DCFG_NET_WAC
+        )
+        set(CFG_BUILD_WAC 1)
+    endif()
+
+    if (DEFINED CFG_NET_SIPROXD)
+        add_definitions(
+            -DCFG_NET_SIPROXD
+        )
+        set(CFG_BUILD_SIPROXD 1)
+    endif()
+
+    if (DEFINED CFG_NET_DNS_SD)
+        add_definitions(
+            -DCFG_NET_DNS_SD
+        )
+        set(CFG_BUILD_DNS_SD 1)
+    endif()
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DNS_SD_RESPONDER)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DNS_SD_DAEMON)
+
+    if (DEFINED CFG_NET_SHAIRPORT_DACP)
+        add_definitions(
+            -DCFG_NET_SHAIRPORT_DACP
+        )
+        set(CFG_BUILD_AO 1)
+        set(CFG_BUILD_OPENSSL 1)
+        set(CFG_BUILD_SHAIRPORT_DACP 1)
+    endif()
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_BLOCK_UDP)
+
+    if (DEFINED CFG_SIP_SERVER_TEST)
+        add_definitions(
+            -DCFG_SIP_SERVER_TEST
+            -DCFG_REGISTER_ACCOUNT="${CFG_REGISTER_ACCOUNT}"
+            -DCFG_REGISTER_DOMAIN="${CFG_REGISTER_DOMAIN}"
+            -DCFG_REGISTER_PWD="${CFG_REGISTER_PWD}"
+            -DCFG_REGISTER_ACCOUNT_2="${CFG_REGISTER_ACCOUNT_2}"
+            -DCFG_REGISTER_DOMAIN_2="${CFG_REGISTER_DOMAIN_2}"
+            -DCFG_REGISTER_PWD_2="${CFG_REGISTER_PWD_2}"
+            -DCFG_SIP_CALLOUT="${CFG_SIP_CALLOUT}"
+        )
+
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SIP_INDOOR_TEST)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SIP_LOBBY_TEST)
+        ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SIP_OUTDOOR_TEST)
+    endif()
+
+    if (DEFINED CFG_PING)
+        add_definitions(
+            -DCFG_PING
+        )
+        set(CFG_BUILD_PING  1)
+    endif()
+
+    if (DEFINED CFG_JSON)
+        add_definitions(
+            -DCFG_JSON
+        )
+        set(CFG_BUILD_JSON  1)
+    endif()
+
+    if (DEFINED CFG_P2P)
+        add_definitions(
+            -DCFG_P2P
+            -DCFG_P2P_CALLOUT="${CFG_P2P_CALLOUT}"
+            -DCFG_P2P_DOMAIN="${CFG_P2P_DOMAIN}"
+        )
+    endif()
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_SIP_PROXD_TEST)
+else()
+    add_definitions(
+        -DCFG_NET_ETHERNET_PHY_ADDR=-1
+        -DCFG_NET_ETHERNET_COUNT=1
+    )
+endif()
+
+# Task
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_TASK_DRIVE_PROBE)
+
+if (DEFINED CFG_TASK_HDMI_PROBE)
+    add_definitions(
+        -DCFG_TASK_HDMI_PROBE
+        -DCFG_TASK_HDMI_PROBE_PERIOD
+    )
+endif()
+
+if (DEFINED CFG_BUILD_GTEST)
+    add_definitions(
+        -DGTEST_HAS_POSIX_RE=0
+    )
+endif()
+
+# Debug
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_DBG_PRINTBUF_SIZE 0)
+
+if (DEFINED CFG_DBG_SWUART)
+    add_definitions(
+        -DCFG_DBG_SWUART
+        -DCFG_SWUART_BAUDRATE=${CFG_SWUART_BAUDRATE}
+    )
+#elseif (DEFINED CFG_DBG_SWUART_CODEC)
+#    add_definitions(
+#        -DCFG_DBG_SWUART_CODEC
+#        -DCFG_SWUART_CODEC_BAUDRATE=${CFG_SWUART_CODEC_BAUDRATE}
+#        -DCFG_SWUART_CODEC_GPIO=${CFG_SWUART_CODEC_GPIO}
+#    )
+endif()
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DBG_PRINTBUF)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DBG_UART0)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DBG_UART1)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DBG_LCDCONSOLE)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DBG_OSDCONSOLE)
+
+if (DEFINED CFG_DBG_NETCONSOLE)
+    add_definitions(
+        -DCFG_DBG_NETCONSOLE
+        -DCFG_DBG_NETCONSOLE_PORT=${CFG_DBG_NETCONSOLE_PORT}
+    )
+    if (DEFINED CFG_DBG_NETCLI)
+        add_definitions(
+            -DCFG_DBG_NETCLI
+            -DCFG_DBG_NETCLI_PORT=${CFG_DBG_NETCLI_PORT}
+        )
+    endif()
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DBG_BLUESCREEN)
+
+if (DEFINED CFG_DBG_MEMLEAK)
+    add_definitions(
+        -DCFG_DBG_MEMLEAK
+        -DCFG_DBG_MEMLEAK_LEN=${CFG_DBG_MEMLEAK_LEN}
+    )
+endif()
+
+if (DEFINED CFG_DBG_RMALLOC)
+    add_definitions(
+        -DCFG_DBG_RMALLOC
+        -DMALLOC_DEBUG
+    )
+endif()
+
+if (DEFINED CFG_DBG_STATS)
+    add_definitions(
+        -DCFG_DBG_STATS
+        -DCFG_DBG_STATS_PERIOD=${CFG_DBG_STATS_PERIOD}
+    )
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DBG_STATS_HEAP)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DBG_STATS_TASK_LIST)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DBG_STATS_TASK_TIME)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DBG_STATS_MEM_BANDWIDTH)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DBG_STATS_TCPIP)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DBG_STATS_FAT)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DBG_STATS_NTFS)
+
+    if (DEFINED CFG_DBG_STATS_GPIO)
+        add_definitions(
+            -DCFG_DBG_STATS_GPIO
+            -DCFG_DBG_STATS_GPIO_START_PIN=${CFG_DBG_STATS_GPIO_START_PIN}
+            -DCFG_DBG_STATS_GPIO_END_PIN=${CFG_DBG_STATS_GPIO_END_PIN}
+
+        )
+    endif()
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DBG_TRACE_ANALYZER)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DBG_VCD)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DBG_TRACE)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_ENABLE_UART_CLI)
+
+if (CFG_ENABLE_UART_CLI)
+    set(CFG_BUILD_CLI y)
+endif()
+
+# Upgrade
+add_definitions(
+    -DCFG_UPGRADE_FILENAME="${CFG_UPGRADE_FILENAME}"
+    -DCFG_UPGRADE_FILENAME_LIST="${CFG_UPGRADE_FILENAME_LIST}"
+    -DCFG_UPGRADE_ENC_KEY=${CFG_UPGRADE_ENC_KEY}
+)
+
+if (DEFINED CFG_UPGRADE_PACKAGE_VERSION)
+    add_definitions(
+        -DCFG_UPGRADE_PACKAGE_VERSION=${CFG_UPGRADE_PACKAGE_VERSION}
+        )
+endif()
+
+if (DEFINED CFG_UPGRADE_BOOTLOADER OR DEFINED CFG_UPGRADE_IMAGE OR DEFINED CFG_UPGRADE_DATA)
+    set(CFG_BUILD_UPGRADE 1)
+endif()
+
+if (DEFINED CFG_UPGRADE_PRESSKEY)
+    add_definitions(
+        -DCFG_UPGRADE_PRESSKEY
+        -DCFG_UPGRADE_PRESSKEY_NUM=${CFG_UPGRADE_PRESSKEY_NUM}
+        -DCFG_UPGRADE_PRESSKEY_DELAY=${CFG_UPGRADE_PRESSKEY_DELAY}
+    )
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_UPGRADE_OPEN_FILE)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_UPGRADE_IMAGE_NAND)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_UPGRADE_IMAGE_NOR)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_UPGRADE_IMAGE_SD0)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_UPGRADE_IMAGE_SD1)
+
+if (DEFINED CFG_UPGRADE_IMAGE)
+    add_definitions(
+        -DCFG_UPGRADE_IMAGE_POS=${CFG_UPGRADE_IMAGE_POS}
+    )
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_UPGRADE_DELETE_PKGFILE_AFTER_FINISH)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_UPGRADE_DELAY_AFTER_FINISH)
+
+if (DEFINED CFG_UPGRADE_USB_TIMEOUT)
+    add_definitions(
+        -DCFG_UPGRADE_USB_DETECT_TIMEOUT=${CFG_UPGRADE_USB_DETECT_TIMEOUT}
+        -DCFG_UPGRADE_USB_TIMEOUT=${CFG_UPGRADE_USB_TIMEOUT}
+    )
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_UPGRADE_USB_DEVICE)
+if (CFG_UPGRADE_USB_DEVICE)
+    set(CFG_BUILD_CLI y)
+endif()
+
+if (DEFINED CFG_UPGRADE_RECOVERY)
+    add_definitions(
+        -DCFG_UPGRADE_RECOVERY
+        -DCFG_UPGRADE_RECOVERY_PRESSKEY_NUM=${CFG_UPGRADE_RECOVERY_PRESSKEY_NUM}
+        -DCFG_UPGRADE_RECOVERY_PRESSKEY_DELAY=${CFG_UPGRADE_RECOVERY_PRESSKEY_DELAY}
+        -DCFG_UPGRADE_RECOVERY_SERVER_ADDR="${CFG_UPGRADE_RECOVERY_SERVER_ADDR}"
+    )
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_UPGRADE_RECOVERY_TFTP)
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED_STRING_VALUE(CFG_UPGRADE_RECOVERY_SSID)
+
+if (DEFINED CFG_UPGRADE_RECOVERY_LED)
+    add_definitions(
+        -DCFG_UPGRADE_RECOVERY_LED
+        -DCFG_UPGRADE_RECOVERY_LED_NUM="${CFG_UPGRADE_RECOVERY_LED_NUM}"
+    )
+endif()
+
+if (DEFINED CFG_UPGRADE_RESET_FACTORY)
+    add_definitions(
+        -DCFG_UPGRADE_RESET_FACTORY
+        -DCFG_UPGRADE_RESET_FACTORY_PRESSKEY_NUM=${CFG_UPGRADE_RESET_FACTORY_PRESSKEY_NUM}
+        -DCFG_UPGRADE_RESET_FACTORY_PRESSKEY_DELAY=${CFG_UPGRADE_RESET_FACTORY_PRESSKEY_DELAY}
+    )
+endif()
+
+if (DEFINED CFG_UPGRADE_BACKUP_PACKAGE)
+    add_definitions(
+        -DCFG_UPGRADE_BACKUP_PACKAGE
+        -DCFG_UPGRADE_BACKUP_PACKAGE_POS=${CFG_UPGRADE_BACKUP_PACKAGE_POS}
+    )
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_UPGRADE_MARK_POS)
+
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_UPGRADE_FROM_UART)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_UPGRADE_FROM_UART_BOOT_TIME)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_UPGRADE_FROM_UART_RUN_TIME)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_UPGRADE_UART0)
+ITE_ADD_DEFINITIONS_IF_DEFINED_VALUE(CFG_UPGRADE_UART1)
+
+# Gadget
+if (DEFINED CFG_USB_DEVICE)
+    add_definitions(
+        -DCFG_USB_DEVICE
+        -DCFG_GPIO_USB_ID_PIN=${CFG_GPIO_USB_ID_PIN}
+        -DCFG_USB_VENDOR_ID=${CFG_USB_VENDOR_ID}
+        -DCFG_USB_PRODUCT_ID=${CFG_USB_PRODUCT_ID}
+        -DCFG_USBD_STR_MANUFACTURER="${CFG_USBD_STR_MANUFACTURER}"
+        -DCFG_USBD_STR_PRODUCT="${CFG_USBD_STR_PRODUCT}"
+        -DCFG_USBD_STR_SERIAL_NUMBER="${CFG_USBD_STR_SERIAL_NUMBER}"
+    )
+
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USB_DEVICE_USB0)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USB_DEVICE_USB1)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USB_DEVICE_NEW)
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED_STRING_VALUE(CFG_USB_DEVICE_DRIVE)
+
+if (DEFINED CFG_USBD_MASS_STORAGE)
+    add_definitions(
+        -DCFG_USBD_MASS_STORAGE
+    )
+
+    add_definitions(
+        -DCFG_USB_DEVICE_DISKS=${CFG_USB_DEVICE_DISKS}
+        -DCFG_USBD_LUN_VENDOR_ID=${CFG_USBD_LUN_VENDOR_ID}
+        -DCFG_USBD_LUN0_PRODUCT_ID=${CFG_USBD_LUN0_PRODUCT_ID}
+        -DCFG_USBD_LUN1_PRODUCT_ID=${CFG_USBD_LUN1_PRODUCT_ID}
+        -DCFG_USBD_LUN2_PRODUCT_ID=${CFG_USBD_LUN2_PRODUCT_ID}
+        -DCFG_USBD_LUN3_PRODUCT_ID=${CFG_USBD_LUN3_PRODUCT_ID}
+    )
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBD_NCM)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBD_ACM)
+if (DEFINED CFG_USBD_HID_DEVICE
+ OR DEFINED CFG_USBD_HID_MOUSE
+ OR DEFINED CFG_USBD_HID_KBD)
+    set(CFG_USBD_HID y)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBD_HID)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBD_HID_DEVICE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBD_HID_MOUSE)
+    ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBD_HID_KBD)
+endif()
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_DBG_USB)
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_USBD_UVC)
+
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_COMPRESS_AUDIO_PLUGIN)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_BUILD_AUDIO_MGR)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_MGR_M4A)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_MGR_WAV_HD)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_MGR_LRC)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_MGR_RESAMPLE)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_AUDIO_MGR_PARSING_MP3)
+
+if (NOT DEFINED CFG_CHIP_PKG_IT9852)
+    add_definitions(
+        -DCFG_NORMAL_BUFFER_MODE
+    )
+endif()
+
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_CTRLBOARD_REDUCE_PBUFSIZE)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_NET_WIFI_REDEFINE)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_ENABLE_ROTATE)
+
+# SDK
+if (DEFINED CFG_GENERATE_VERSION_TWEAK)
+    string(TIMESTAMP CFG_VERSION_TWEAK %Y%m%d)
+    #message("CFG_VERSION_TWEAK=${CFG_VERSION_TWEAK}")
+endif()
+
+if (DEFINED CFG_BUILD_DEBUG)
+    set(CMAKE_BUILD_TYPE "Debug")
+    add_definitions(
+        -DCFG_BUILD_DEBUG
+    )
+elseif (DEFINED CFG_BUILD_DEBUGREL)
+    set(CMAKE_BUILD_TYPE "RelWithDebInfo")
+    add_definitions(
+        -DCFG_BUILD_DEBUGREL
+    )
+elseif (DEFINED CFG_BUILD_RELEASE)
+    set(CMAKE_BUILD_TYPE "Release")
+    add_definitions(
+        -DCFG_BUILD_RELEASE
+    )
+elseif (DEFINED CFG_BUILD_MINSIZEREL)
+    set(CMAKE_BUILD_TYPE "MinSizeRel")
+    add_definitions(
+        -DCFG_BUILD_MINSIZEREL
+    )
+endif()
+
+add_definitions(
+    -DCFG_VERSION_MAJOR=${CFG_VERSION_MAJOR}
+    -DCFG_VERSION_MINOR=${CFG_VERSION_MINOR}
+    -DCFG_VERSION_PATCH=${CFG_VERSION_PATCH}
+    -DCFG_VERSION_CUSTOM=${CFG_VERSION_CUSTOM}
+    -DCFG_VERSION_TWEAK=${CFG_VERSION_TWEAK}
+    -DCFG_VERSION_MAJOR_STR="${CFG_VERSION_MAJOR}"
+    -DCFG_VERSION_MINOR_STR="${CFG_VERSION_MINOR}"
+    -DCFG_VERSION_PATCH_STR="${CFG_VERSION_PATCH}"
+    -DCFG_VERSION_CUSTOM_STR="${CFG_VERSION_CUSTOM}"
+    -DCFG_VERSION_TWEAK_STR="${CFG_VERSION_TWEAK}"
+    -DCFG_SYSTEM_NAME="${CFG_SYSTEM_NAME}"
+    -DCFG_MANUFACTURER="${CFG_MANUFACTURER}"
+    -DCFG_PROJECT_NAME="${CMAKE_PROJECT_NAME}"
+)
+
+# Global include paths
+include_directories(
+    ${PROJECT_SOURCE_DIR}/$ENV{CFG_PLATFORM}/include
+    ${PROJECT_SOURCE_DIR}/sdk/include
+    ${PROJECT_SOURCE_DIR}/sdk/itu/include
+)
+
+if ($ENV{CFG_PLATFORM} STREQUAL win32)
+    link_directories(
+        ${PROJECT_SOURCE_DIR}/build/$ENV{CFG_PLATFORM}/lib
+    )
+else()
+    link_directories(
+        ${PROJECT_SOURCE_DIR}/build/$ENV{CFG_PLATFORM}/lib/${CFG_CPU_NAME}
+    )
+endif()
+
+# data
+file(MAKE_DIRECTORY
+    ${CMAKE_BINARY_DIR}/data/private/backup/${CFG_PUBLIC_DRIVE}
+    ${CMAKE_BINARY_DIR}/data/public
+    ${CMAKE_BINARY_DIR}/data/temp
+)
+
+#IPTV
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_IPTV_TX)
+ITE_ADD_DEFINITIONS_IF_DEFINED(CFG_IPTV_RX)

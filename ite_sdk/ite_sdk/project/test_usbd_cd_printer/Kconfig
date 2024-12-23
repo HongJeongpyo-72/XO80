@@ -1,0 +1,58 @@
+#
+# For a description of the syntax of this configuration file,
+# see Documentation/kbuild/kconfig-language.txt.
+#
+
+mainmenu "Project Configuration"
+
+config CMAKE_SOURCE_DIR
+	string
+	option env="CMAKE_SOURCE_DIR"
+
+config ROM_COMPRESS
+    def_bool n
+
+config USBHCC
+	def_bool y
+
+config USBHCC_HOST
+	def_bool y
+
+config USBH_CD_PRINTER
+	def_bool y
+
+config USBHCC_DEVICE
+	def_bool y
+
+config DEF_USBD_CD_PRINTER
+	def_bool y
+
+config DEF_USBD_USB1
+	def_bool y
+
+config USB0_ENABLE
+	def_bool n
+	
+config TASK_DRIVE_PROBE	
+	def_bool y
+
+config FS_FAT
+	def_bool y
+
+config UART0_ENABLE
+    def_bool y
+
+config GPIO_UART0_TX
+    default "4"
+
+config GPIO_UART0_RX
+    default "-1"
+	
+config DEF_DBG_UART0
+	def_bool y
+	
+config GPIO_USB_ID_PIN
+    default "53"
+    
+source "$CMAKE_SOURCE_DIR/sdk/Kconfig"
+

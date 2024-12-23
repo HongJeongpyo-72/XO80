@@ -1,0 +1,451 @@
+#define MAX_IO_OFFON	20
+#define MAX_IO_TEXT		9
+#define MAX_IO_BG		59
+#define MAX_SC_BG_MODE	13
+#define MAX_SC_BG_CNT	6
+
+typedef enum {
+	IN3_B01	= 0,
+	IN3_B23,	// 1
+	IN3_B45,	// 2
+	IN3_B67,	// 3
+	IN4_B01,	// 4
+	IN4_B23,	// 5
+	IN4_B45,	// 6
+	IN4_B67,	// 7
+	IN5_B01,	// 8
+	IN5_B23,	// 9
+	IN5_B45,	// 10
+	IN5_B67,	// 11
+	IN6_B01,	// 12
+	IN6_B23,	// 13
+	IN6_B45,	// 14
+	IN6_B67,	// 15
+	IN7_B01,	// 16
+	IN7_B23,	// 17
+	IN7_B45,	// 18
+	IN7_B67,	// 19
+	IN9_B01,	// 20
+	IN9_B23,	// 21
+	IN9_B45,	// 22
+	IN9_B67,	// 23
+	IN13_B01,
+	IN13_B23,
+	IN13_B45,
+	IN13_B67,
+	IN17_B01,
+	IN17_B23,
+	IN17_B45,
+	IN17_B67,
+	IN23_B01,
+	IN23_B23,
+	IN23_B45,
+	IN23_B67,
+	OUT2_B01,
+	OUT2_B23,
+	OUT2_B45,
+	OUT2_B67,
+	OUT3_B01,
+	OUT3_B23,
+	OUT3_B45,
+	OUT3_B67,
+	OUT4_B01,
+	OUT4_B23,
+	OUT4_B45,
+	OUT4_B67,
+	OUT8_B01,
+	OUT8_B23,
+	OUT8_B45,
+	OUT8_B67,
+	AUX1_B01,
+	AUX1_B23,
+	AUX1_B45,
+	AUX1_B67,
+	AUX2_B01,
+	AUX2_B23,
+	AUX2_B45,
+	AUX2_B67,
+	MTSPD_B01,
+	MTSPD_B23,
+	MTSPD_B45,
+	MTSPD_B67,
+	OUT5_B0,
+	OUT5_B1,
+	OUT5_B2,
+	OUT5_B3,
+	OUT5_B4,
+	OUT5_B5,
+	OUT5_B6,
+	OUT5_B7,
+
+	IN7_B34,	// 17
+	MAX_BYTE2_CNT
+} BS_IN_BYTE2_CNT;
+
+typedef enum {
+	IN1_B0_b0 = 0,
+	IN1_B0_b1,	// 1
+	IN1_B0_b2,	// 2
+	IN1_B0_b3,	// 3
+	IN1_B0_b4,	// 4
+	IN1_B0_b5,	// 5
+	IN1_B0_b6,	// 6
+	IN1_B0_b7,	// 7
+	IN1_B1_b0,	// 8
+	IN1_B1_b1,	// 9
+	IN1_B1_b2,	// 10
+	IN1_B1_b3,	// 11
+	IN1_B1_b4,	// 12
+	IN1_B1_b5,	// 13
+	IN1_B1_b6,	// 14
+	IN1_B1_b7,	// 15
+	IN1_B2_b0,	// 16
+	IN1_B2_b1,	// 17
+	IN1_B2_b2,	// 18
+	IN1_B2_b3,	// 19
+	IN1_B2_b4,	// 20
+	IN1_B2_b5,	// 21
+	IN1_B2_b6,	// 22
+	IN1_B2_b7,	// 23
+	IN1_B3_b0,	// 24
+	IN1_B3_b1,	// 25
+	IN1_B3_b2,	// 26
+	IN1_B3_b3,	// 27
+	IN1_B3_b4,	// 28
+	IN1_B3_b5,	// 29
+	IN1_B3_b6,	// 30
+	IN1_B3_b7,	// 31
+	IN1_B4_b0,	// 32
+	IN1_B4_b1,	// 33
+	IN1_B4_b2,	// 34
+	IN1_B4_b3,	// 35
+	IN1_B4_b4,	// 36
+	IN1_B4_b5,	// 37
+	IN1_B4_b6,	// 38
+	IN1_B4_b7,	// 39
+	IN1_B5_b0,	// 40
+	IN1_B5_b1,	// 41
+	IN1_B5_b2,	// 42
+	IN1_B5_b3,	// 43
+	IN1_B5_b4,	// 44
+	IN1_B5_b5,	// 45
+	IN1_B5_b6,	// 46
+	IN1_B5_b7,	// 47
+	IN1_B6_b0,	// 48
+	IN1_B6_b1,	// 49
+	IN1_B6_b2,	// 50
+	IN1_B6_b3,	// 51
+	IN1_B6_b4,	// 52
+	IN1_B6_b5,	// 53
+	IN1_B6_b6,	// 54
+	IN1_B6_b7,	// 55
+	IN1_B7_b0,	// 56
+	IN1_B7_b1,	// 57
+	IN1_B7_b2,	// 58
+	IN1_B7_b3,	// 59
+	IN1_B7_b4,	// 60
+	IN1_B7_b5,	// 61
+	IN1_B7_b6,	// 62
+	IN1_B7_b7,	// 63
+	IN2_B0_b0,
+	IN2_B0_b1,
+	IN2_B0_b2,
+	IN2_B0_b3,
+	IN2_B0_b4,
+	IN2_B0_b5,
+	IN2_B0_b6,
+	IN2_B0_b7,
+	IN2_B1_b0,
+	IN2_B1_b1,
+	IN2_B1_b2,
+	IN2_B1_b3,
+	IN2_B1_b4,
+	IN2_B1_b5,
+	IN2_B1_b6,
+	IN2_B1_b7,
+	IN2_B2_b0,
+	IN2_B2_b1,
+	IN2_B2_b2,
+	IN2_B2_b3,
+	IN2_B2_b4,
+	IN2_B2_b5,
+	IN2_B2_b6,
+	IN2_B2_b7,
+	IN2_B3_b0,
+	IN2_B3_b1,
+	IN2_B3_b2,
+	IN2_B3_b3,
+	IN2_B3_b4,
+	IN2_B3_b5,
+	IN2_B3_b6,
+	IN2_B3_b7,
+	IN2_B4_b0,
+	IN2_B4_b1,
+	IN2_B4_b2,
+	IN2_B4_b3,
+	IN2_B4_b4,
+	IN2_B4_b5,
+	IN2_B4_b6,
+	IN2_B4_b7,
+	IN2_B5_b0,
+	IN2_B5_b1,
+	IN2_B5_b2,
+	IN2_B5_b3,
+	IN2_B5_b4,
+	IN2_B5_b5,
+	IN2_B5_b6,
+	IN2_B5_b7,
+	IN2_B6_b0,
+	IN2_B6_b1,
+	IN2_B6_b2,
+	IN2_B6_b3,
+	IN2_B6_b4,
+	IN2_B6_b5,
+	IN2_B6_b6,
+	IN2_B6_b7,
+	IN2_B7_b0,
+	IN2_B7_b1,
+	IN2_B7_b2,
+	IN2_B7_b3,
+	IN2_B7_b4,
+	IN2_B7_b5,
+	IN2_B7_b6,
+	IN2_B7_b7,
+	AUX1_B0_b0,
+	AUX1_B0_b1,
+	AUX1_B0_b2,
+	AUX1_B0_b3,
+	AUX1_B0_b4,
+	AUX1_B0_b5,
+	AUX1_B0_b6,
+	AUX1_B0_b7,
+	AUX1_B1_b0,
+	AUX1_B1_b1,
+	AUX1_B1_b2,
+	AUX1_B1_b3,
+	AUX1_B1_b4,
+	AUX1_B1_b5,
+	AUX1_B1_b6,
+	AUX1_B1_b7,
+	AUX1_B2_b0,
+	AUX1_B2_b1,
+	AUX1_B2_b2,
+	AUX1_B2_b3,
+	AUX1_B2_b4,
+	AUX1_B2_b5,
+	AUX1_B2_b6,
+	AUX1_B2_b7,
+	AUX1_B3_b0,
+	AUX1_B3_b1,
+	AUX1_B3_b2,
+	AUX1_B3_b3,
+	AUX1_B3_b4,
+	AUX1_B3_b5,
+	AUX1_B3_b6,
+	AUX1_B3_b7,
+	AUX1_B4_b0,
+	AUX1_B4_b1,
+	AUX1_B4_b2,
+	AUX1_B4_b3,
+	AUX1_B4_b4,
+	AUX1_B4_b5,
+	AUX1_B4_b6,
+	AUX1_B4_b7,
+	AUX1_B5_b0,
+	AUX1_B5_b1,
+	AUX1_B5_b2,
+	AUX1_B5_b3,
+	AUX1_B5_b4,
+	AUX1_B5_b5,
+	AUX1_B5_b6,
+	AUX1_B5_b7,
+	AUX1_B6_b0,
+	AUX1_B6_b1,
+	AUX1_B6_b2,
+	AUX1_B6_b3,
+	AUX1_B6_b4,
+	AUX1_B6_b5,
+	AUX1_B6_b6,
+	AUX1_B6_b7,
+	AUX1_B7_b0,
+	AUX1_B7_b1,
+	AUX1_B7_b2,
+	AUX1_B7_b3,
+	AUX1_B7_b4,
+	AUX1_B7_b5,
+	AUX1_B7_b6,
+	AUX1_B7_b7,
+	OUT1_B0_b0,
+	OUT1_B0_b1,
+	OUT1_B0_b2,
+	OUT1_B0_b3,
+	OUT1_B0_b4,
+	OUT1_B0_b5,
+	OUT1_B0_b6,
+	OUT1_B0_b7,
+	OUT1_B1_b0,
+	OUT1_B1_b1,
+	OUT1_B1_b2,
+	OUT1_B1_b3,
+	OUT1_B1_b4,
+	OUT1_B1_b5,
+	OUT1_B1_b6,
+	OUT1_B1_b7,
+	OUT1_B2_b0,
+	OUT1_B2_b1,
+	OUT1_B2_b2,
+	OUT1_B2_b3,
+	OUT1_B2_b4,
+	OUT1_B2_b5,
+	OUT1_B2_b6,
+	OUT1_B2_b7,
+	OUT1_B3_b0,
+	OUT1_B3_b1,
+	OUT1_B3_b2,
+	OUT1_B3_b3,
+	OUT1_B3_b4,
+	OUT1_B3_b5,
+	OUT1_B3_b6,
+	OUT1_B3_b7,
+	OUT1_B4_b0,
+	OUT1_B4_b1,
+	OUT1_B4_b2,
+	OUT1_B4_b3,
+	OUT1_B4_b4,
+	OUT1_B4_b5,
+	OUT1_B4_b6,
+	OUT1_B4_b7,
+	OUT1_B5_b0,
+	OUT1_B5_b1,
+	OUT1_B5_b2,
+	OUT1_B5_b3,
+	OUT1_B5_b4,
+	OUT1_B5_b5,
+	OUT1_B5_b6,
+	OUT1_B5_b7,
+	OUT1_B6_b0,
+	OUT1_B6_b1,
+	OUT1_B6_b2,
+	OUT1_B6_b3,
+	OUT1_B6_b4,
+	OUT1_B6_b5,
+	OUT1_B6_b6,
+	OUT1_B6_b7,
+	OUT1_B7_b0,
+	OUT1_B7_b1,
+	OUT1_B7_b2,
+	OUT1_B7_b3,
+	OUT1_B7_b4,
+	OUT1_B7_b5,
+	OUT1_B7_b6,
+	OUT1_B7_b7,
+	OUT6_B0_b0,
+	OUT6_B0_b1,
+	OUT6_B0_b2,
+	OUT6_B0_b3,
+	OUT6_B0_b4,
+	OUT6_B0_b5,
+	OUT6_B0_b6,
+	OUT6_B0_b7,
+	OUT6_B1_b0,
+	OUT6_B1_b1,
+	OUT6_B1_b2,
+	OUT6_B1_b3,
+	OUT6_B1_b4,
+	OUT6_B1_b5,
+	OUT6_B1_b6,
+	OUT6_B1_b7,
+	OUT6_B2_b0,
+	OUT6_B2_b1,
+	OUT6_B2_b2,
+	OUT6_B2_b3,
+	OUT6_B2_b4,
+	OUT6_B2_b5,
+	OUT6_B2_b6,
+	OUT6_B2_b7,
+	OUT6_B3_b0,
+	OUT6_B3_b1,
+	OUT6_B3_b2,
+	OUT6_B3_b3,
+	OUT6_B3_b4,
+	OUT6_B3_b5,
+	OUT6_B3_b6,
+	OUT6_B3_b7,
+	OUT6_B4_b0,
+	OUT6_B4_b1,
+	OUT6_B4_b2,
+	OUT6_B4_b3,
+	OUT6_B4_b4,
+	OUT6_B4_b5,
+	OUT6_B4_b6,
+	OUT6_B4_b7,
+	OUT6_B5_b0,
+	OUT6_B5_b1,
+	OUT6_B5_b2,
+	OUT6_B5_b3,
+	OUT6_B5_b4,
+	OUT6_B5_b5,
+	OUT6_B5_b6,
+	OUT6_B5_b7,
+	OUT6_B6_b0,
+	OUT6_B6_b1,
+	OUT6_B6_b2,
+	OUT6_B6_b3,
+	OUT6_B6_b4,
+	OUT6_B6_b5,
+	OUT6_B6_b6,
+	OUT6_B6_b7,
+	OUT6_B7_b0,
+	OUT6_B7_b1,
+	OUT6_B7_b2,
+	OUT6_B7_b3,
+	OUT6_B7_b4,
+	OUT6_B7_b5,
+	OUT6_B7_b6,
+	OUT6_B7_b7,
+	
+	IN17_B4_b0,
+	IN17_B4_b1,
+	MAX_BIT_CNT
+} BS_IN_BIT_CNT;
+
+typedef struct
+{
+	uint16_t BYTE2[MAX_BYTE2_CNT];
+	bool BIT1[MAX_BIT_CNT];
+} BS_IN_DATA;
+
+BS_IN_DATA BSI;
+
+#define BS_TEXT_X1_POS		206
+#define BS_TEXT_X2_POS		526
+
+#define BS_TEXT_Y_UNIT		35
+#define BS_TEXT_Y1_POS		89
+#define BS_TEXT_Y2_POS		(BS_TEXT_Y1_POS+BS_TEXT_Y_UNIT)
+#define BS_TEXT_Y3_POS		(BS_TEXT_Y2_POS+BS_TEXT_Y_UNIT)
+#define BS_TEXT_Y4_POS		(BS_TEXT_Y3_POS+BS_TEXT_Y_UNIT)
+#define BS_TEXT_Y5_POS		(BS_TEXT_Y4_POS+BS_TEXT_Y_UNIT)
+#define BS_TEXT_Y6_POS		(BS_TEXT_Y5_POS+BS_TEXT_Y_UNIT)
+#define BS_TEXT_Y7_POS		(BS_TEXT_Y6_POS+BS_TEXT_Y_UNIT)
+#define BS_TEXT_Y8_POS		(BS_TEXT_Y7_POS+BS_TEXT_Y_UNIT)
+#define BS_TEXT_Y9_POS		(BS_TEXT_Y8_POS+BS_TEXT_Y_UNIT)
+#define BS_TEXT_Y10_POS		(BS_TEXT_Y9_POS+BS_TEXT_Y_UNIT)
+
+
+
+
+#define BS_OnOff_X1_POS		260
+#define BS_OnOff_X2_POS		580	//572
+
+#define BS_OnOff_Y_UNIT		35
+#define BS_OnOff_Y1_POS		93
+#define BS_OnOff_Y2_POS		(BS_OnOff_Y1_POS+BS_OnOff_Y_UNIT)
+#define BS_OnOff_Y3_POS		(BS_OnOff_Y2_POS+BS_OnOff_Y_UNIT)
+#define BS_OnOff_Y4_POS		(BS_OnOff_Y3_POS+BS_OnOff_Y_UNIT)
+#define BS_OnOff_Y5_POS		(BS_OnOff_Y4_POS+BS_OnOff_Y_UNIT)
+#define BS_OnOff_Y6_POS		(BS_OnOff_Y5_POS+BS_OnOff_Y_UNIT)
+#define BS_OnOff_Y7_POS		(BS_OnOff_Y6_POS+BS_OnOff_Y_UNIT)
+#define BS_OnOff_Y8_POS		(BS_OnOff_Y7_POS+BS_OnOff_Y_UNIT)
+#define BS_OnOff_Y9_POS		(BS_OnOff_Y8_POS+BS_OnOff_Y_UNIT)
+#define BS_OnOff_Y10_POS	(BS_OnOff_Y9_POS+BS_OnOff_Y_UNIT)

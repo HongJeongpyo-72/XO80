@@ -1,0 +1,52 @@
+#
+# For a description of the syntax of this configuration file,
+# see Documentation/kbuild/kconfig-language.txt.
+#
+
+mainmenu "Project Configuration"
+
+config TEST_UVC
+    bool
+    default y
+    select HAVE_LCD
+    select HAVE_GRAPHICS
+
+config CMAKE_SOURCE_DIR
+    string
+    option env="CMAKE_SOURCE_DIR"
+
+config RAM_SIZE
+    default "0x4000000"
+
+config BACKLIGHT_ENABLE
+    def_bool y
+
+config BACKLIGHT_DUTY_CYCLES
+    default "5, 25, 40, 55, 65, 75, 82, 88, 92, 95"
+
+config BACKLIGHT_DEFAULT_DUTY_CYCLE
+    default "95"
+
+config UVC_ENABLE
+    def_bool y
+
+config JPEG_HW_ENABLE
+    default y
+
+source "$CMAKE_SOURCE_DIR/sdk/Kconfig"
+
+menu "USB UVC Test"
+
+choice
+    prompt "Test App"
+    default TEST_UVC
+
+config UVC_EXAMPLE
+    bool "USB UVC"
+    depends on UVC_ENABLE
+
+endchoice
+
+endmenu
+
+

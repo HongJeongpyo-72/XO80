@@ -1,0 +1,284 @@
+#
+# For a description of the syntax of this configuration file,
+# see Documentation/kbuild/kconfig-language.txt.
+#
+
+mainmenu "Project Configuration"
+
+config PROJECT_MODULE_DEFINED
+    bool
+    default y
+    #select HAVE_LCD
+    #select HAVE_GRAPHICS
+    select HAVE_AUDIO
+    #select HAVE_VIDEO
+
+config RAM_INIT_SCRIPT
+    default "IT970A0_396Mhz_DDR2_396Mhz.scr"
+
+config CMAKE_SOURCE_DIR
+    string
+    option env="CMAKE_SOURCE_DIR"
+
+config I2S_ENABLE
+    def_bool y
+
+config AUDIO_ENABLE
+    def_bool y
+
+config AUDIO_DAC_MODULE
+    default "itp_dac_ite970.c"
+    
+config UART0_ENABLE
+    def_bool y
+
+config GPIO_UART0_TX
+    default "4"
+
+config GPIO_UART0_RX
+    default "-1"
+
+config FS_FAT
+	def_bool y
+
+config USB0_ENABLE
+    def_bool y
+
+config MSC_ENABLE
+    def_bool y
+
+config TASK_DRIVE_PROBE
+    def_bool y
+    
+config BUILD_AUDIO_MGR
+    def_bool y
+    
+config AUDIO_CODEC_MP3DEC
+    def_bool y
+
+config AUDIO_CODEC_WAV
+    def_bool y
+    
+config	AMPLIFIER_ENABLE
+    def_bool y
+
+config AMPLIFIER_MODULE
+    default "itp_amp_gpio.c"
+
+config GPIO_AMPLIFIER_ENABLE
+    default "25"
+
+config GPIO_AMPLIFIER_MUTE
+    default "25"
+
+config DEF_DBG_UART0
+    def_bool y
+
+config DBG_INIT_SCRIPT
+    default "IT970A0_396Mhz_DDR2_396Mhz.txt"
+
+menu "TEST AUDIO"
+
+    choice
+    prompt "Select Test Item"
+    default TEST_AUDIO_HW_CTRL
+    help
+        select test item.
+
+    config TEST_AUDIO_HW_CTRL
+    bool "test audio HW control"
+    help
+        test audio HW control (IIS DAC layout...)
+        
+    config TEST_AUDIO_FLOW
+    bool "test audio FLOW "
+    help
+        test audio FLOW API
+
+    config TEST_AUDIOMGR_PLAY
+    bool "test audio MGR "
+    help
+        test audio MGR API
+        
+    endchoice
+
+    choice
+    depends on TEST_AUDIO_HW_CTRL
+    prompt "test audio HW ctrl"
+    default TEST_HW_PLAY
+    help
+        audioHWctrl/
+        HW ctrl
+
+    config TEST_HW_PLAY
+    bool "HW iis play"
+    help
+        test_main_simple.c
+        simple iis test play sound.(DA TEST)
+
+    config TEST_HW_USBWAV_PLAY
+    bool "HW usbwav play"
+    help
+        test_main_usb_play.c
+        usb disk wav file play test.(DA & USB TEST)
+
+    config TEST_HW_USBWAV_RECORD
+    bool "HW usbwav record"
+    help
+        test_main_usb_record.c
+        usb disk wav record file test.(AD & USB TEST)
+
+#    config AD_REC_DA_PLAY_TEST
+#    bool "AD record & DA play sound test"
+#    help
+#        TEST AD record & DA play sound.
+
+    config TEST_HW_LOUDER
+    bool "HW louder"
+    help
+        test_main_louder.c
+        louder(AD & DA TEST).
+        
+#    config FFT_SNR_TEST
+#    bool "ffr snr record test"
+#    help
+#        1K tone out record test(output feedback to input) FFT meansure SNR.
+#    help_cht
+#        1K 頻率錄音(輸出回灌到輸入) FFT 測量 SNR。
+#    help_chs
+#        1K 頻率錄音(輸出回灌到輸入) FFT 測量 SNR。
+        
+#    config BIST_OUT_RECORD_TEST
+#    bool "bist out record test"
+#    help
+#        1K tone out record test(output feedback to input).
+#    help_cht
+#        1K 頻率錄音(輸出回灌到輸入)。
+#    help_chs
+#        1K 頻率錄音(輸出回灌到輸入)。
+
+    endchoice
+    
+    choice
+    depends on TEST_AUDIO_FLOW
+    prompt "test audio flow louder"
+    default TEST_FLOWER_LAOUDER
+    help
+        audioFlow/
+        audio FLOW API
+
+    config TEST_FLOWER_PLAY
+        bool "FLOWER play"
+        help
+            test_flower_play.c
+            play a:/Music8k1c.wav
+
+    config TEST_FLOWER_USBREC
+        bool "FLOWER usbrec"
+        help
+            test_flower_usbrec.c
+            rec a:/rec.wav
+
+    config TEST_FLOWER_MIX
+        bool "FLOWER mix"
+        help
+            test_flower_mix.c
+            paly a:/Music8k1c.wav
+            mix a:/0.wav a:/1.wav a:/2.wav a:/3.wav
+    
+    config TEST_FLOWER_ASR
+        bool "FLOWER asr"
+        help
+            test_flower_asr.c
+        
+    config TEST_FLOWER_LAOUDER
+        bool "FLOWER louder"
+        help
+            test_flower_louader.c
+            mic in & spk out
+	
+	config TEST_FLOWER_LAOUDER_MIX
+        bool "FLOWER louder with mix"
+        help
+            test_flower_louader_mix.c
+            mic in & spk out with mix a:/0.wav a:/1.wav a:/2.wav a:/3.wav
+
+    config TEST_FLOWER_ANALOGSPK
+        bool "FLOWER analog speaker"
+        help
+            test_flower_analogskl.c
+            analog mic in & spk out
+
+    config TEST_FLOWER_RESAMPLE_PLAY
+        bool "FLOWER resample play"
+        help
+            test_flower_resample_play.c
+            play a:/test.wav and resample to another sample rate(default:48K)
+			
+	config TEST_FLOWER_RESAMPLE_PLAY_ASR
+        bool "FLOWER resample play and asr"
+        help
+            test_flower_resample_play_with_asr.c
+            play a:/test.wav and asr
+            
+    config TEST_FLOWER_STREAM_PLAY
+        bool "FLOWER stream play"
+        help
+            test_flower_stream.c
+            play a:/test.mp3
+
+    endchoice
+    
+    choice
+    depends on TEST_AUDIOMGR_PLAY
+    prompt "test audio MGR API"
+    default AUDIOMGR_PLAY_TEST
+    help
+        audioMgr/
+        audiomgr API.
+        
+    config AUDIOMGR_PLAY_TEST
+    bool "AUDIOMGR play"
+    help
+        test_main_audiomgr.c
+        usb disk audiomgr test(audio codec:mp3 wma wav).
+        
+    #config MP3_CODEC_TEST
+    #bool "mp3 codec decoder test"
+    #help
+    #    mp3 codec decoder test.
+           
+    endchoice
+
+endmenu
+
+if TEST_AUDIO_FLOW
+    config BUILD_FLOWER
+        def_bool y
+    
+    config BUILD_ASR
+        def_bool y
+    
+    config ASR_LIB_MODULE
+        default "libasr_ITE01.a" 
+        
+    config SINGLE_GROUND_MODE
+        def_bool y
+        
+    config BUILD_AUDIO_PREPROCESS
+        def_bool y
+        
+    config DIALOGUE_PARAMETER_SET
+        def_bool y
+        
+    config AEC_ENABLE
+        def_bool y
+        
+    config AEC_DELAY_MS
+        default "0"
+        
+    config BUILD_SPEEX
+        def_bool y
+endif
+
+source "$CMAKE_SOURCE_DIR/sdk/Kconfig"

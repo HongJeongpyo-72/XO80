@@ -1,0 +1,180 @@
+﻿#
+# For a description of the syntax of this configuration file,
+# see Documentation/kbuild/kconfig-language.txt.
+#
+
+mainmenu "Project Configuration"
+
+config PROJECT_MODULE_DEFINED
+    bool
+    default y
+    #select HAVE_LCD
+    #select HAVE_GRAPHICS
+    select HAVE_AUDIO
+    #select HAVE_VIDEO
+
+config RAM_INIT_SCRIPT
+    default "IT970A0_396Mhz_DDR2_396Mhz.scr"
+
+config CMAKE_SOURCE_DIR
+    string
+    option env="CMAKE_SOURCE_DIR"
+
+config I2S_ENABLE
+    def_bool y
+
+config AUDIO_ENABLE
+    def_bool y
+
+config AUDIO_DAC_MODULE
+    default "itp_dac_ite970.c"
+
+config GPIO_UART0_TX
+    default "4"
+
+config GPIO_UART0_RX
+    default "-1"
+
+config FS_FAT
+	def_bool y
+
+config USB0_ENABLE
+    def_bool y
+
+config MSC_ENABLE
+    def_bool y
+
+config TASK_DRIVE_PROBE
+    def_bool y
+    
+config	AMPLIFIER_ENABLE
+    def_bool y
+
+config AMPLIFIER_MODULE
+    default "itp_amp_gpio.c"
+
+config GPIO_AMPLIFIER_ENABLE
+    default "25"
+
+config GPIO_AMPLIFIER_MUTE
+    default "25"
+
+config DBG_INIT_SCRIPT
+    default "IT970A0_396Mhz_DDR2_396Mhz.txt"
+
+config BUILD_FLOWER
+    def_bool y
+        
+config BUILD_AUDIO_PREPROCESS
+    def_bool y
+        
+config DIALOGUE_PARAMETER_SET
+    def_bool y
+        
+config AEC_ENABLE
+    def_bool y
+        
+config AEC_DELAY_MS
+    default "0"
+    
+config BUILD_SPEEX
+    def_bool y
+    
+config NET_ENABLE
+    def_bool y
+    
+config GPIO_ETHERNET_LINK
+    default "37"
+
+config GPIO_ETHERNET
+    default "27, 28, 29, 30, 31, 32, 33, 34, 35, 36"
+
+if NET_ENABLE
+config NET_ETHERNET
+    def_bool y
+
+config DEF_NET_IP101GR
+    def_bool y
+endif
+
+config NET_ETHERNET_LINK_INTR
+    def_bool y
+
+config NET_ETHERNET_MAC_ADDR_RANDOM
+    def_bool y
+
+if NET_ETHERNET
+config NET_ETHERNET_MAC_ADDR_STORAGE
+    def_bool y
+endif
+
+if NET_ETHERNET_MAC_ADDR_STORAGE
+
+config NET_ETHERNET_MAC_ADDR_POS
+    default "0x70000"
+
+config NET_ETHERNET_MAC_ADDR_UPGRADE
+    def_bool y
+
+endif
+
+config NET_ETHERNET_PHY_ADDR
+  default "1"
+
+config NET_HTTP
+    def_bool y
+
+config NET_FTP
+    def_bool y
+
+if NET_FTP_SERVER
+config BUILD_LWIP_FTPD
+    def_bool y
+endif
+
+config NET_DHCP_SERVER
+    def_bool y
+
+config DHCPS_ADDR_COUNT
+  default "254"
+
+config PING
+	def_bool y
+    
+menu "TEST AUDIO"
+ 
+    choice
+    prompt "Test Audio Filter Flow"
+    default AUDIOFILTER_CALLED_TEST
+    help
+        test audio filter called.
+    help_cht
+        測試audio filter called
+    help_chs
+        測試audio filter called
+        
+    config AUDIOFILTER_CALLED_TEST
+    bool "audio filter called test"
+    help
+        audio filter called test.
+    help_cht
+        audio filter called test。
+    help_chs
+        audio filter called test。
+
+    config AUDIOFILTER_CALLING_TEST
+    bool "audio filter calling test"
+    help
+        audio filter calling test.
+    help_cht
+        audio filter calling test。
+    help_chs
+        audio filter calling test。
+        
+    endchoice
+
+endmenu
+
+source "$CMAKE_SOURCE_DIR/sdk/Kconfig"
+
+

@@ -1,0 +1,166 @@
+#
+# For a description of the syntax of this configuration file,
+# see Documentation/kbuild/kconfig-language.txt.
+#
+
+mainmenu "Project Configuration"
+
+config TEST_CAP
+    bool
+    default y
+    select HAVE_LCD
+    select HAVE_GRAPHICS
+    select HAVE_VIDEO
+    select HAVE_AUDIO
+
+config CMAKE_SOURCE_DIR
+    string
+    option env="CMAKE_SOURCE_DIR"
+
+config DEF_CPU_FA626
+    def_bool y
+
+config RAM_SIZE
+    default "0x4000000"
+
+config LCD_ENABLE
+    def_bool y
+
+config LCD_WIDTH
+    default "480"
+
+config LCD_HEIGHT
+    default "272"
+
+config LCD_PITCH
+    default "960"
+
+config LCD_INIT_SCRIPT
+    default "it970a0_LCD_innolux_480_272_rgb_24bits_128pin.txt"
+
+config BACKLIGHT_ENABLE
+    def_bool y
+
+config BACKLIGHT_DUTY_CYCLES
+    default "5, 25, 40, 55, 65, 75, 82, 88, 92, 95"
+
+config GPIO_BACKLIGHT_PWM
+     default "59"
+
+config BACKLIGHT_DEFAULT_DUTY_CYCLE
+    default "95"
+
+config GPIO_BACKLIGHT_PWM
+    default "59"
+    
+config GPIO_PWM_NUMBER
+    default "4"
+    
+config GPIO_PWM_MODE
+    default "3"
+
+config CMDQ_ENABLE
+    def_bool y
+
+config M2D_ENABLE
+    def_bool y
+	
+config I2C0_ENABLE
+    def_bool y
+
+config GPIO_IIC0_CLK
+    default "43"
+
+config GPIO_IIC0_DATA
+    default "42"
+
+config GPIO_IIC0_MODE
+    default "1"
+
+
+config UART0_ENABLE
+    def_bool n
+
+config UART1_ENABLE
+    def_bool y
+
+config GPIO_UART1_TX
+    default "4"
+
+config GPIO_UART1_RX
+    default "-1"
+
+config CAPTURE_DEFINE
+    default "DEMO_972_Lobby_NT99141.txt"
+
+config SENSOR_ENABLE
+    def_bool y
+
+config CAPTURE_SENSOR
+    default "NT99141.c"
+
+config GPIO_SN1_RST
+    default "41"
+
+config GPIO_SN1_PWN
+    default "40"
+
+config GPIO_SN1_LED
+    default "57"
+
+config GPIO_SN1_MCLK
+    default "47"
+
+config VIDEO_ENABLE
+    def_bool y
+
+config STC_ENABLE
+    def_bool y
+
+config FS_FAT
+    def_bool y
+
+config ITU_UCL_ENABLE
+    def_bool n
+
+config BUILD_INIPARSER
+    def_bool n
+
+config BUILD_ITU
+    def_bool y
+
+config BUILD_SDL
+    def_bool y
+
+config TASK_DRIVE_PROBE
+    def_bool y
+
+config RECORD_VIDEO
+    def_bool n
+
+
+source "$CMAKE_SOURCE_DIR/sdk/Kconfig"
+
+
+menu "CAP TEST FUNCTION"
+
+    choice
+        prompt "Test CAP"
+        default CAP_MODULE_MODE
+    config CAP_MODULE_MODE
+        bool "CAP_MODULE_MODE"
+        help
+            Peripheral->SENSOR ENABLE = true
+    config CAP_HDMIRX_MODE
+        bool "CAP_HDMIRX_MODE"
+        help
+            Peripheral->HDMI RX ENABLE = true
+			
+    config CAP_DELAYWINDOWS_MODE
+        bool "CAP_DELAYWINDOWS_MODE"
+        help
+            Scan Delay Windows.
+    endchoice
+
+endmenu
+
